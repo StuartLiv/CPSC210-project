@@ -15,9 +15,9 @@ database of nutritional information, track the:
 - Overall mass of food
 - Time of meals
 
-Users can store recipes with measured amounts of food to for more ease of tracking, add ingredients they use to the 
-database, see daily summary statistics about their food, compare information about different ingredients, observe diet 
-changes over time and more. 
+Users can store recipes with measured amounts of food as *frequent meals* to make entering them again easier, add 
+ingredients they use to the database, see daily summary statistics about their food, compare information about different
+ingredients, observe diet changes over time and more. 
 
 As someone who currently tries to track this information, I have yet to find a method better than doing it in my head 
 and only daily tracking, and not over a longer period of time, as to maintain and calculate this data on my own is far 
@@ -26,3 +26,9 @@ and a large time commitment just to get started, and with this project, I aim to
 nutritional goals easier.
 
 
+## Phase One User Stories
+
+As a user, I want to add a type and amount of food I ate
+As a user, I want to add multiple unknown ingredients to the ingredient database
+As a user, I want to add a recipe to my frequent meal list
+As a user, I want to see summary statistics about my daily nutrition
