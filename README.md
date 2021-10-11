@@ -10,7 +10,7 @@ database of nutritional information, track the:
 
 - Calories
 - Protein
-- Carbs
+- Carbohydrates
 - Fat
 - Overall mass of food
 - Time of meals
