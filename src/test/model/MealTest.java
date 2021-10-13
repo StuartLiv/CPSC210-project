@@ -37,13 +37,18 @@ class MealTest {
     @Test
     void getTotal() {
         ArrayList<String> expected = new ArrayList<>();
-        expected.add("Sum");
+        expected.add("Overnight Oats");
         expected.add("281");
         expected.add("564");
         expected.add("22");
         expected.add("120");
         expected.add("5");
         assertEquals(expected, morningOatmeal.getTotal().getIngredient().getFields());
+    }
+
+    @Test
+    void getScaledTotal() {
+        assertTrue(true);
     }
 
     @Test

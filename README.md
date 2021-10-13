@@ -28,7 +28,7 @@ nutritional goals easier.
 
 ## Phase One User Stories
 
-As a user, I want to add a type and amount of food I ate
+As a user, I want to add a meal to my meal history
 As a user, I want to add multiple unknown ingredients to the ingredient database
-As a user, I want to add a recipe to my frequent meal list
+As a user, I want to add a recipe to my recipe book
 As a user, I want to see summary statistics about my daily nutrition

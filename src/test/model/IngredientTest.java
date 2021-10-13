@@ -31,5 +31,4 @@ class IngredientTest {
 
         assertEquals(expected, actual);
     }
-
 }

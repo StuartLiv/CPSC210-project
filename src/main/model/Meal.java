@@ -16,6 +16,7 @@ public class Meal {
         this.serving = mass;
         this.time = time;
         this.total = recipe.getTotal();
+        this.total = getScaledTotal();
     }
 
     //EFFECTS: returns Recipe
@@ -32,6 +33,13 @@ public class Meal {
     //EFFECTS: returns nutritional Total
     public Portion getTotal() {
         return total;
+    }
+
+    //EFFECTS: returns nutritional total scaled to this.serving
+    public Portion getScaledTotal() {
+        double factor = (double) serving / recipe.massTotal();
+        total.scaleIngredient(factor);
+        return null;
     }
 
     //EFFECTS: returns mass of meal

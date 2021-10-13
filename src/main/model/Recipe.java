@@ -5,20 +5,20 @@ import java.util.Objects;
 
 //Represents a list of portions, with a recipeName
 public class Recipe {
-    private ArrayList<Portion> ingredients;
-    private String recipeName;
+    private final ArrayList<Portion> portions;
+    private final String recipeName;
     private boolean toSave = true;
 
     //MODIFIES: this
     //EFFECTS: Initialize name, and scale ingredient serving sizes
     public Recipe(ArrayList<Portion> ingredients, String name) {
-        //scale ingredients
+        //scale ingredients to getServingSize() = Portion.mass
         for (Portion p: ingredients) {
             p.scaleIngredient();
         }
-        this.ingredients = ingredients;
+        this.portions = ingredients;
         this.recipeName = name;
-        if (Objects.equals(name, "temp")) {
+        if (Objects.equals(name, "Unsaved Recipe")) {
             this.toSave = false;
         }
     }
@@ -33,9 +33,9 @@ public class Recipe {
         return toSave;
     }
 
-    //EFFECTS: return ingredient list
+    //EFFECTS: return ingredient list (portions)
     public ArrayList<Portion> getIngredients() {
-        return ingredients;
+        return portions;
     }
 
 
@@ -43,7 +43,7 @@ public class Recipe {
     public Portion getTotal() {
 
         int mass = this.massTotal();
-        Ingredient sum = new Ingredient("Sum", mass, this.calTotal(), this.proteinTotal(),
+        Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
                 this.carbTotal(), this.fatTotal());
         return new Portion(sum, mass);
     }
@@ -51,7 +51,7 @@ public class Recipe {
     //EFFECTS: returns sum of the masses of all portions
     public int massTotal() {
         int sum = 0;
-        for (Portion portion: ingredients) {
+        for (Portion portion: portions) {
             sum += portion.getIngredient().getServingSize();
         }
         return sum;
@@ -60,7 +60,7 @@ public class Recipe {
     //EFFECTS: returns sum of the calories of all portions
     public int calTotal() {
         int sum = 0;
-        for (Portion portion: ingredients) {
+        for (Portion portion: portions) {
             sum += portion.getIngredient().getCalories();
         }
         return sum;
@@ -69,7 +69,7 @@ public class Recipe {
     //EFFECTS: returns sum of the protein of all portions
     public int proteinTotal() {
         int sum = 0;
-        for (Portion portion: ingredients) {
+        for (Portion portion: portions) {
             sum += portion.getIngredient().getProtein();
         }
         return sum;
@@ -78,7 +78,7 @@ public class Recipe {
     //EFFECTS: returns sum of the carbs of all portions
     public int carbTotal() {
         int sum = 0;
-        for (Portion portion: ingredients) {
+        for (Portion portion: portions) {
             sum += portion.getIngredient().getCarbs();
         }
         return sum;
@@ -87,7 +87,7 @@ public class Recipe {
     //EFFECTS: returns sum of the fat of all portions
     public int fatTotal() {
         int sum = 0;
-        for (Portion portion: ingredients) {
+        for (Portion portion: portions) {
             sum += portion.getIngredient().getFat();
         }
         return sum;

@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Collections;
 import java.util.ArrayList;
 
 //Represents an ingredient with name, serving size and nutritional information3
@@ -13,7 +12,7 @@ public class Ingredient {
     private final int fat;
 
 
-    //REQUIRES: name has a non-zero length
+    //REQUIRES: 0 < ingredientName.length() < 16
     //MODIFIES: this
     //EFFECTS: All parameters are assigned to field of the same name
     public Ingredient(String ingredientName, int mass, int calories, int protein, int carbs, int fat) {
@@ -24,8 +23,18 @@ public class Ingredient {
         this.carbs = carbs;
         this.fat = fat;
     }
-    //constructor from inputs
-    //serving size, calories, protein, carb, fat
+
+    //REQUIRES: 0 < ingredientName.length() < 16
+    //MODIFIES: this
+    //EFFECTS: All parameters are assigned to field of the same name
+    public Ingredient(String[] parameters) {
+        this.ingredientName = parameters[0];
+        this.servingSize = Integer.parseInt(parameters[1]);
+        this.calories = Integer.parseInt(parameters[2]);
+        this.protein = Integer.parseInt(parameters[3]);
+        this.carbs = Integer.parseInt(parameters[4]);
+        this.fat = Integer.parseInt(parameters[5]);
+    }
 
     //Field Getters
 
