@@ -35,6 +35,13 @@ public class RecipeTest {
     }
 
     @Test
+
+    void getIngredientsTest() {
+        Recipe oatmeal = new Recipe(portions, "Overnight Oats");
+        assertEquals(oatmeal.getIngredients(), portions);
+    }
+
+    @Test
     //Tests the getTotal method
     void testGetTotal() {
         Recipe oatmeal = new Recipe(portions, "Overnight Oats");
