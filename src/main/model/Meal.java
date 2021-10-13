@@ -39,7 +39,7 @@ public class Meal {
     public Portion getScaledTotal() {
         double factor = (double) serving / recipe.massTotal();
         total.scaleIngredient(factor);
-        return null;
+        return total;
     }
 
     //EFFECTS: returns mass of meal
