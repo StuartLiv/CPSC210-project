@@ -28,7 +28,7 @@ public class PortionTest {
     }
 
     @Test
-
+    //test overloaded scaleIngredient method
     void scaleIngredientFactorTest() {
         Ingredient oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
         Portion OatsScaled = new Portion(oat, 50);

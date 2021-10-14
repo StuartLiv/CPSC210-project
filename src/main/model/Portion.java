@@ -6,7 +6,7 @@ public class Portion  {
     private int mass;
     private final double factor;
 
-    //REQUIRES: mass >= 0, ingredient is initialized
+    //REQUIRES: mass >= 0, ingredient is non-null
     //MODIFIES: this
     //EFFECTS: parameters are assigned to field of same name, and a conversion factor is calculated
     public Portion(Ingredient ingredient, int mass) {
@@ -30,6 +30,7 @@ public class Portion  {
         return (double) mass / (double) ingredient.getServingSize();
     }
 
+    //EFFECTS: converts an int by factor, and return as a rounded int
     public int convert(int toConvert, double factor) {
         return (int) Math.round(toConvert * factor);
     }
@@ -42,6 +43,7 @@ public class Portion  {
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));
     }
 
+    //REQUIRES: factor>=0
     //MODIFIES: this.ingredient
     //EFFECTS: scales ingredient to provided factor
     public void scaleIngredient(double factor) {

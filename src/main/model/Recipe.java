@@ -9,6 +9,7 @@ public class Recipe {
     private final String recipeName;
     private boolean toSave = true;
 
+    //REQUIRES: ingredients is an initialized list
     //MODIFIES: this
     //EFFECTS: Initialize name, and scale ingredient serving sizes
     public Recipe(ArrayList<Portion> ingredients, String name) {
@@ -41,7 +42,6 @@ public class Recipe {
 
     //EFFECTS: calculate and total nutrition statistics for a recipe
     public Portion getTotal() {
-
         int mass = this.massTotal();
         Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
                 this.carbTotal(), this.fatTotal());

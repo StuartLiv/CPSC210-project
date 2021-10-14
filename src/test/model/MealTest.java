@@ -11,8 +11,6 @@ class MealTest {
     private Meal morningOatmeal;
     private Recipe oatmeal;
 
-    //Getter tests, as these will be methods for phase 2 and task 5
-
     @BeforeEach
     void runBefore() {
         ArrayList<Portion> ingredients = new ArrayList<>();
@@ -24,18 +22,20 @@ class MealTest {
         morningOatmeal = new Meal(oatmeal, 281, 7);
     }
 
+    //Getter tests, as these will be methods for phase 2 and task 5
+
     @Test
     void getRecipeTest() {
         assertEquals(oatmeal, morningOatmeal.getRecipe());
     }
 
     @Test
-    void getTime() {
+    void getTimeTest() {
         assertEquals(7, morningOatmeal.getTime());
     }
 
     @Test
-    void getTotal() {
+    void getTotalTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Overnight Oats");
         expected.add("281");
@@ -47,12 +47,20 @@ class MealTest {
     }
 
     @Test
-    void getScaledTotal() {
-        assertTrue(true);
+    void getScaledTotalTest() {
+        Meal halfOatmeal = (new Meal (oatmeal, 140, 8));
+        ArrayList<String> expected = new ArrayList<>();
+        expected.add("Overnight Oats");
+        expected.add("140");
+        expected.add("281");
+        expected.add("11");
+        expected.add("60");
+        expected.add("2");
+        assertEquals(expected, halfOatmeal.getTotal().getIngredient().getFields());
     }
 
     @Test
-    void getMass() {
+    void getMassTest() {
         assertEquals(281, morningOatmeal.getMass());
     }
 }

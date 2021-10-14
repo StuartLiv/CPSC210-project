@@ -11,6 +11,7 @@ import java.util.Scanner;
 
 //TrackerApp, runTracker, processCommand, displayMenu getAction modeled after the sample project TellerApp
 //Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
+//NOTE: some input handlers are non-robust, this will be improved once construction materials are covered in course
 public class TrackerApp {
     private ArrayList<Ingredient> ingredientList;
     private ArrayList<Recipe> recipeBook;
@@ -20,7 +21,6 @@ public class TrackerApp {
     private boolean keepGoing = true;
 
 
-    //MODIFIES
     //EFFECTS: runs the tracker application
     public TrackerApp() {
         runTracker();
@@ -148,8 +148,11 @@ public class TrackerApp {
             case "r":
                 System.out.println("This feature will be implemented in Phase 2");
                 break;
-            default:
+            case "s":
                 seeIngredients();
+                break;
+            default:
+                System.out.println("Selection not valid...");
                 break;
         }
     }
@@ -167,6 +170,7 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: adds entered ingredient to ingredientList
+    //Method is non-robust, will be improved with exception throwing in phase 2
     private void addIngredient(String ingredientID) {
         System.out.println("Enter " + ingredientID + " in the tab separated form: \nName \t\t\tServing \tCalories "
                 + "\tProtein \tCarbs \tFat");
@@ -204,7 +208,7 @@ public class TrackerApp {
         }
     }
 
-    //EFFECTS: returns ingredient with search name
+    //EFFECTS: returns ingredient with search name or null if not found
     private Ingredient findIngredient(String name) {
         for (Ingredient ingredient: ingredientList) {
             if (name.equals(ingredient.getIngredientName())) {
@@ -225,8 +229,11 @@ public class TrackerApp {
             case "r":
                 System.out.println("This feature will be implemented in Phase 2");
                 break;
-            default:
+            case "s":
                 seeRecipes();
+                break;
+            default:
+                System.out.println("Selection not valid...");
                 break;
         }
     }
@@ -272,6 +279,7 @@ public class TrackerApp {
         return recipeString;
     }
 
+    //REQUIRES: recipeString elements are properly formatted, as toPortion call is not robust
     //EFFECTS: converts recipeString into arrayList<Portion>
     private ArrayList<Portion> recipeProcess(ArrayList<String> recipeString) {
         ArrayList<Portion> portions = new ArrayList<>();
@@ -281,6 +289,7 @@ public class TrackerApp {
         return portions;
     }
 
+    //REQUIRES: portionStrings[1] is a string casted int
     //EFFECTS: converts ingredient name and mass to portion
     private Portion toPortion(String[] portionStrings) {
         String name = portionStrings[0];
@@ -294,7 +303,7 @@ public class TrackerApp {
         return new Portion(ingredient, mass);
     }
 
-    //EFFECTS:prints recipeBook
+    //EFFECTS: prints recipeBook
     private void seeRecipes() {
         System.out.println("These are your stored recipes:\n");
         for (Recipe r: recipeBook) {
@@ -320,7 +329,8 @@ public class TrackerApp {
         System.out.println("\t\t" + portion.getMass());
     }
 
-    //EFFECTS: returns recipe with search name
+    //EFFECTS: returns recipe with search name or null if not found
+    //Method is not robust, handler must be robust
     private Recipe findRecipe(String name) {
         for (Recipe r: recipeBook) {
             if (name.equals(r.getName())) {
@@ -341,8 +351,11 @@ public class TrackerApp {
             case "r":
                 System.out.println("This feature will be implemented in Phase 2");
                 break;
-            default:
+            case "s":
                 seeMeals();
+                break;
+            default:
+                System.out.println("Selection not valid...");
                 break;
         }
     }
@@ -360,6 +373,7 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: adds a meal to tracker
+    //input handlers are non-robust, improved functionality in phase 2
     private void addMeal() {
         String recipeStyle = getRecipeStyle();
         Recipe mealRecipe;
@@ -432,8 +446,6 @@ public class TrackerApp {
 
     //EFFECTS: prints summary and daily nutritional info
     //NOTE: improved functionality in phase 2, with improved time implementation
-
-    //ERROR: serv
     private void doStats() {
         String date = "Oct 13, 2021"; //update in phase 2
         System.out.println("Total Daily Nutrition\n");

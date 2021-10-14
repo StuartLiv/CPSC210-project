@@ -24,7 +24,7 @@ public class Ingredient {
         this.fat = fat;
     }
 
-    //REQUIRES: 0 < ingredientName.length() < 16
+    //REQUIRES: 0 < ingredientName.length() < 16, parameter[1:5] are string casted integers
     //MODIFIES: this
     //EFFECTS: All parameters are assigned to field of the same name
     public Ingredient(String[] parameters) {

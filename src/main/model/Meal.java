@@ -8,7 +8,7 @@ public class Meal {
     private int time;
     //Implement more complex field for time in phase 2
 
-    //REQUIRES: 0 <= time <= 23
+    //REQUIRES: 0 <= time <= 23, recipe is non-null, mass >=0
     //MODIFIES: this
     //EFFECTS: fields are set, and total nutrition for meal is calculated
     public Meal(Recipe recipe, int mass, int time) {

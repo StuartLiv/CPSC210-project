@@ -16,8 +16,9 @@ class IngredientTest {
         oat = new Ingredient("Oats", 100, 333, 11, 73, 3 );
     }
 
-    //Test getFields, indirectly testing all the other getters
+
     @Test
+    //Test getFields, indirectly testing all the other getters
     void getFieldsTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Oats");
