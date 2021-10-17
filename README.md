@@ -25,10 +25,15 @@ too time-consuming to be worth it. I believe that a major barrier to self-improv
 and a large time commitment just to get started, and with this project, I aim to make starting, and keeping to your 
 nutritional goals easier.
 
+## User Stories
 
-## Phase One User Stories
+### Phase One User Stories
+- As a user, I want to add a meal to my meal history
+- As a user, I want to add multiple unknown ingredients to the ingredient database
+- As a user, I want to add a recipe to my recipe book
+- As a user, I want to see summary statistics about my daily nutrition
 
-As a user, I want to add a meal to my meal history
-As a user, I want to add multiple unknown ingredients to the ingredient database
-As a user, I want to add a recipe to my recipe book
-As a user, I want to see summary statistics about my daily nutrition
+### Phase Two User Stories
+- As a user, I want to select a profile with user history to load
+- As a user, I want to save my application state
+- As a user, I want to be reminded to save the application state when I exit the program

@@ -2,6 +2,7 @@ package ui;
 
 import model.*;
 
+//Git test
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -19,7 +20,6 @@ public class TrackerApp {
 
     private Scanner input;
     private boolean keepGoing = true;
-
 
     //EFFECTS: runs the tracker application
     public TrackerApp() {
