@@ -1,11 +1,16 @@
 package model;
 
+import java.time.*;
+
+
 //Represents a meal with recipe, summary total, serving size, and time of meal in hours
 public class Meal {
     private Recipe recipe;
     private Portion total;
     private int serving;
     private int time;
+//    private LocalDate date;
+//    private LocalTime mealTime;
     //Implement more complex field for time in phase 2
 
     //REQUIRES: 0 <= time <= 23, recipe is non-null, mass >=0

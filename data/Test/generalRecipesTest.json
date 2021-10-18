@@ -1,0 +1,17 @@
+{
+  "Recipes": [
+    {
+      "name": "Overnight Oats",
+      "portions": [
+        {
+          "Ingredient": ["Oats", "100", "333", "11", "73", "3"],
+          "mass": 156
+        },
+        {
+          "Ingredient": ["Milk", "250", "90", "9", "12", "0"],
+          "mass": 125
+        }
+      ]
+    }
+  ]
+}

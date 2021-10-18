@@ -209,7 +209,7 @@ public class TrackerApp {
     }
 
     //EFFECTS: returns ingredient with search name or null if not found
-    private Ingredient findIngredient(String name) {
+    public Ingredient findIngredient(String name) {
         for (Ingredient ingredient: ingredientList) {
             if (name.equals(ingredient.getIngredientName())) {
                 return ingredient;
@@ -217,6 +217,7 @@ public class TrackerApp {
         }
         return null;
     }
+
 
     //MODIFIES: this
     //EFFECTS: add, read, edit, remove ingredients
