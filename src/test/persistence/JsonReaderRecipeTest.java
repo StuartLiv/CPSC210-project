@@ -26,7 +26,7 @@ public class JsonReaderRecipeTest {
     }
 
     @Test
-    void testReaderEmptyWorkRoom() {
+    void testReaderEmptyRecipeList() {
         JsonReaderRecipe reader = new JsonReaderRecipe("./data/Test/emptyRecipeTest.json");
         try {
             ArrayList<Recipe> recipeList = reader.readRecipe();
@@ -37,7 +37,7 @@ public class JsonReaderRecipeTest {
     }
 
     @Test
-    void testReaderGeneralWorkRoom() {
+    void testReaderGeneralRecipeList() {
         JsonReaderRecipe reader = new JsonReaderRecipe("./data/Test/generalRecipesTest.json");
         try {
             ArrayList<Recipe> recipeList = reader.readRecipe();

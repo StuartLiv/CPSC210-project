@@ -31,17 +31,17 @@ public class JsonReaderRecipe extends JsonReaderIngredient {
 
     // EFFECTS: parses recipeList from JSON object and returns it
     private ArrayList<Recipe> parseRecipes(JSONObject jsonObject) {
-        ArrayList<Recipe> ingredientList = new ArrayList<>();
+        ArrayList<Recipe> recipeList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("Recipes");
         for (Object json : jsonArray) {
             JSONObject nextIngredient = (JSONObject) json;
-            ingredientList.add(parseRecipe(nextIngredient));
+            recipeList.add(parseRecipe(nextIngredient));
         }
-        return ingredientList;
+        return recipeList;
     }
 
     // EFFECTS: parses recipe from JSONObject
-    private Recipe parseRecipe(JSONObject jsonObject) {
+    protected Recipe parseRecipe(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         ArrayList<Portion> ingredients;
         ingredients = parsePortions(jsonObject);

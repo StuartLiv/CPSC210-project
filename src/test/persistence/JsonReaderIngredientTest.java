@@ -26,7 +26,7 @@ public class JsonReaderIngredientTest {
     }
 
     @Test
-    void testReaderEmptyWorkRoom() {
+    void testReaderEmptyIngredientList() {
         JsonReaderIngredient reader = new JsonReaderIngredient("./data/Test/emptyIngredientTest.json");
         try {
             ArrayList<Ingredient> ingredientList = reader.readIngredient();
@@ -37,7 +37,7 @@ public class JsonReaderIngredientTest {
     }
 
     @Test
-    void testReaderGeneralWorkRoom() {
+    void testReaderGeneralIngredientList() {
         JsonReaderIngredient reader = new JsonReaderIngredient("./data/Test/generalIngredientsTest.json");
         try {
             ArrayList<Ingredient> ingredientList = reader.readIngredient();

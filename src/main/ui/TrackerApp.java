@@ -1,11 +1,13 @@
 package ui;
 
 import model.*;
+import persistence.JsonReaderIngredient;
+import persistence.JsonReaderMeal;
+import persistence.JsonReaderRecipe;
 
-//Git test
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 //Calorie and Macronutrient tracker app
@@ -53,28 +55,28 @@ public class TrackerApp {
     private void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-        loadData();
+
+        try {
+            loadData(chooseProfile());
+        } catch (IOException e) {
+            System.out.println("Invalid profile choice");
+            init();
+        }
+    }
+
+    private String chooseProfile() {
+        System.out.println("What user profile would you like to load?");
+        return input.next().toLowerCase();
     }
 
     //MODIFIES: this
     //EFFECTS: initializes recipeBook, ingredientList, tracker
     //Will implement Data persistence in phase 2, this is an operational stub for phase 1
-    private void loadData() {
-        ingredientList = new ArrayList<>();
-        ingredientList.add(new Ingredient("Oats", 100, 333, 11, 73, 3));
-        ingredientList.add(new Ingredient("Milk", 250, 90, 9, 12, 0));
-        ingredientList.add(new Ingredient("Blueberry", 148, 84, 1, 21, 1));
-
-        recipeBook = new ArrayList<>();
-        ArrayList<Portion> portions = new ArrayList<>();
-        portions.add(new Portion(findIngredient("Oats"), 156));
-        portions.add(new Portion(findIngredient("Milk"), 125));
-        recipeBook.add(new Recipe(portions, "Overnight Oats"));
-
-
-        tracker = new ArrayList<>();
-        tracker.add(new Meal(Objects.requireNonNull(findRecipe("Overnight Oats")), 281, 7));
-
+    private void loadData(String user) throws IOException {
+        String source = "./data/" + user + "/";
+        ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
+        recipeBook = new JsonReaderRecipe(source + "recipeBook.json").readRecipe();
+        tracker = new JsonReaderMeal(source + "tracker.json").readMeal();
     }
 
 
