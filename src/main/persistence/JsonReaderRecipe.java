@@ -13,7 +13,7 @@ import java.util.ArrayList;
 //Modeled after JsonReader in JsonSerializationDemo
 //Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
-//Reader method for ingredients file
+//Reader method for recipes file
 public class JsonReaderRecipe extends JsonReaderIngredient {
 
     // EFFECTS: constructs reader to read from source file
