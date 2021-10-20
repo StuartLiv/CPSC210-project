@@ -8,6 +8,10 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//Modeled after JsonReader in JsonSerializationDemo
+//Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
+//Reader method for meals file
 public class JsonReaderMeal extends  JsonReaderRecipe {
 
     // EFFECTS: constructs reader to read from source file

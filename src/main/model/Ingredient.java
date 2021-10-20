@@ -1,9 +1,12 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 
 //Represents an ingredient with name, serving size and nutritional information3
-public class Ingredient {
+public class Ingredient implements Writable {
     private final String ingredientName;
     private final int servingSize;
     private final int calories;
@@ -78,5 +81,12 @@ public class Ingredient {
         fields.add(Integer.toString(getCarbs()));
         fields.add(Integer.toString(getFat()));
         return fields;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Ingredient", getFields());
+        return json;
     }
 }
