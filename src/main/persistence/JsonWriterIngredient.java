@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 //A writer handler for the ingredientList
 public class JsonWriterIngredient {
-    private static final int TAB = 4;
+    protected static final int TAB = 4;
     private PrintWriter writer;
     private final String destination;
 
@@ -31,9 +31,8 @@ public class JsonWriterIngredient {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of ingredientList to file
-    public void write(ArrayList<Ingredient> ingredients) {
+    public void writeIngredients(ArrayList<Ingredient> ingredients) {
         JSONObject json = new JSONObject();
-
         JSONArray jsonArray = new JSONArray();
         for (Ingredient ingredient: ingredients) {
             jsonArray.put(ingredient.toJson());
@@ -50,7 +49,7 @@ public class JsonWriterIngredient {
 
     // MODIFIES: this
     // EFFECTS: writes string to file
-    private void saveToFile(String json) {
+    protected void saveToFile(String json) {
         writer.print(json);
     }
 }

@@ -1,7 +1,11 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 //Represents a measured quantity of a food
-public class Portion  {
+public class Portion implements Writable {
     private Ingredient ingredient;
     private int mass;
     private final double factor;
@@ -51,5 +55,13 @@ public class Portion  {
                 convert(ingredient.getCalories(), factor), convert(ingredient.getProtein(), factor),
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));
         mass = convert(ingredient.getServingSize(), factor);
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject json = ingredient.toJson();
+        json.put("mass", mass);
+        return json;
     }
 }

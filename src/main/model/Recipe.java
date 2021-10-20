@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -91,6 +94,19 @@ public class Recipe {
             sum += portion.getIngredient().getFat();
         }
         return sum;
+    }
+
+    //EFFECTS: returns json object of recipe
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+
+        json.put("name", recipeName);
+        JSONArray jsonArray = new JSONArray();
+        for (Portion portion: portions) {
+            jsonArray.put(portion.toJson());
+        }
+        json.put("portions", jsonArray);
+        return json;
     }
 
 
