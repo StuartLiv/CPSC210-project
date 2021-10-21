@@ -1,8 +1,6 @@
 package persistence;
 
-import model.Ingredient;
-import model.Portion;
-import model.Recipe;
+import model.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -14,12 +12,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 //Modeled after JsonWriterTest in JsonSerializationDemo
 //Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
-public class JsonWriterRecipeTest {
+public class JsonWriterMealTest {
 
     @Test
     void testWriterInvalidFile() {
         try {
-            JsonWriterRecipe writer = new JsonWriterRecipe("./data/my\0illegal:fileName.json");
+            JsonWriterMeal writer = new JsonWriterMeal("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
         } catch (IOException e) {
@@ -30,15 +28,15 @@ public class JsonWriterRecipeTest {
     @Test
     void testWriterEmptyList() {
         try {
-            ArrayList<Recipe> recipeBook = new ArrayList<>();
-            JsonWriterRecipe writer = new JsonWriterRecipe("./data/Test/testWriterEmptyRecipeList.json");
+            ArrayList<Meal> tracker = new ArrayList<>();
+            JsonWriterMeal writer = new JsonWriterMeal("./data/Test/testWriterEmptyMealList.json");
             writer.open();
-            writer.writeRecipes(recipeBook);
+            writer.writeMeals(tracker);
             writer.close();
 
-            JsonReaderRecipe reader = new JsonReaderRecipe("./data/Test/testWriterEmptyRecipeList.json");
-            ArrayList<Recipe> result = reader.readRecipe();
-            assertEquals(recipeBook, result);
+            JsonReaderMeal reader = new JsonReaderMeal("./data/Test/testWriterEmptyMealList.json");
+            ArrayList<Meal> result = reader.readMeal();
+            assertEquals(tracker, result);
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }
@@ -47,22 +45,25 @@ public class JsonWriterRecipeTest {
     @Test
     void testWriterGeneralIngredientList() {
         try {
-            ArrayList<Recipe> recipeBook = new ArrayList<>();
+            ArrayList<Meal> tracker = new ArrayList<>();
             ArrayList<Portion> portions = new ArrayList<>();
             portions.add(new Portion(
                     new Ingredient("Oats", 100, 333, 11, 73, 3 ), 156));
             portions.add(new Portion (
                     new Ingredient("Milk", 250, 90, 9, 12, 0 ), 125));
-            recipeBook.add(new Recipe(portions, "Overnight Oats"));
-            JsonWriterRecipe writer = new JsonWriterRecipe("./data/Test/testWriterGeneralRecipesList.json");
+            tracker.add(new Meal ((new Recipe(portions, "Overnight Oats")), 281, 7));
+            JsonWriterMeal writer = new JsonWriterMeal("./data/Test/testWriterGeneralMealsList.json");
             writer.open();
-            writer.writeRecipes(recipeBook);
+            writer.writeMeals(tracker);
             writer.close();
-            JsonReaderRecipe reader = new JsonReaderRecipe("./data/Test/testWriterGeneralRecipesList.json");
-            ArrayList<Recipe> result = reader.readRecipe();
 
-            assertEquals(recipeBook.get(0).getTotal().getIngredient().getFields(),
+            JsonReaderMeal reader = new JsonReaderMeal("./data/Test/testWriterGeneralMealsList.json");
+            ArrayList<Meal> result = reader.readMeal();
+
+            assertEquals(tracker.get(0).getTotal().getIngredient().getFields(),
                     result.get(0).getTotal().getIngredient().getFields());
+            assertEquals(tracker.get(0).getMass(), result.get(0).getMass());
+            assertEquals(tracker.get(0).getTime(), result.get(0).getTime());
         } catch (IOException e) {
             fail("Exception should not have been thrown");
         }

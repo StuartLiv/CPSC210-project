@@ -2,12 +2,13 @@ package model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 //Represents a list of portions, with a recipeName
-public class Recipe {
+public class Recipe implements Writable {
     private final ArrayList<Portion> portions;
     private final String recipeName;
     private boolean toSave = true;
@@ -96,6 +97,7 @@ public class Recipe {
         return sum;
     }
 
+    @Override
     //EFFECTS: returns json object of recipe
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+//Modeled after JsonWriterTest in JsonSerializationDemo
+//Link: https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
 public class JsonWriterIngredientTest {
 
     @Test

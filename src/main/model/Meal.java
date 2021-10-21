@@ -1,10 +1,14 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.time.*;
 
 
 //Represents a meal with recipe, summary total, serving size, and time of meal in hours
-public class Meal {
+public class Meal implements Writable {
     private Recipe recipe;
     private Portion total;
     private int serving;
@@ -41,7 +45,7 @@ public class Meal {
     }
 
     //EFFECTS: returns nutritional total scaled to this.serving
-    public Portion getScaledTotal() {
+    private Portion getScaledTotal() {
         double factor = (double) serving / recipe.massTotal();
         total.scaleIngredient(factor);
         return total;
@@ -53,4 +57,15 @@ public class Meal {
     }
 
     //More methods to come, for ui integration
+
+    @Override
+    //EFFECTS: converts meal to json
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("Recipe", recipe.toJson());
+        json.put("mass", serving);
+        json.put("time", time);
+        return json;
+    }
+
 }

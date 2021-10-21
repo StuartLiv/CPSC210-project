@@ -1,9 +1,7 @@
 package ui;
 
 import model.*;
-import persistence.JsonReaderIngredient;
-import persistence.JsonReaderMeal;
-import persistence.JsonReaderRecipe;
+import persistence.*;
 
 
 import java.io.IOException;
@@ -20,8 +18,10 @@ public class TrackerApp {
     private ArrayList<Recipe> recipeBook;
     private ArrayList<Meal> tracker;
 
+
     private Scanner input;
     private boolean keepGoing = true;
+    private String source;
 
     //EFFECTS: runs the tracker application
     public TrackerApp() {
@@ -46,6 +46,11 @@ public class TrackerApp {
             }
             //maintainSorted(); future data persistence method
         }
+
+        System.out.println("Would you like to save the application?");
+        if (getYesNo()) {
+            saveData();
+        }
         System.out.println("\nGoodbye!");
     }
 
@@ -64,6 +69,7 @@ public class TrackerApp {
         }
     }
 
+    // EFFECTS: returns string name of selected user profile
     private String chooseProfile() {
         System.out.println("What user profile would you like to load?");
         return input.next().toLowerCase();
@@ -71,14 +77,34 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: initializes recipeBook, ingredientList, tracker
-    //Will implement Data persistence in phase 2, this is an operational stub for phase 1
     private void loadData(String user) throws IOException {
-        String source = "./data/" + user + "/";
+        source = "./data/" + user + "/";
         ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
         recipeBook = new JsonReaderRecipe(source + "recipeBook.json").readRecipe();
         tracker = new JsonReaderMeal(source + "tracker.json").readMeal();
     }
 
+    //EFFECTS: stores recipeBook, ingredientList, tracker
+    private void saveData() {
+        try {
+            JsonWriterIngredient writerIngredient = new JsonWriterIngredient(source + "ingredients.json");
+            writerIngredient.open();
+            writerIngredient.writeIngredients(ingredientList);
+            writerIngredient.close();
+
+            JsonWriterRecipe writerRecipe = new JsonWriterRecipe(source + "recipeBook.json");
+            writerRecipe.open();
+            writerRecipe.writeRecipes(recipeBook);
+            writerRecipe.close();
+
+            JsonWriterMeal writerMeal = new JsonWriterMeal(source + "tracker.json");
+            writerMeal.open();
+            writerMeal.writeMeals(tracker);
+            writerMeal.close();
+        } catch (IOException e) {
+            System.out.println("Unexpected file name error, data could not be saved");
+        }
+    }
 
     // EFFECTS: displays menu of options to user
     private void displayMenu() {
