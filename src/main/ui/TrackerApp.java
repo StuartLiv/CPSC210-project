@@ -1,6 +1,8 @@
 package ui;
 
 import model.*;
+import model.exceptions.InvalidInputException;
+import model.exceptions.NoIngredientsException;
 import persistence.*;
 
 
@@ -18,7 +20,6 @@ public class TrackerApp {
     private ArrayList<Recipe> recipeBook;
     private ArrayList<Meal> tracker;
 
-
     private Scanner input;
     private boolean keepGoing = true;
     private String source;
@@ -28,8 +29,8 @@ public class TrackerApp {
         runTracker();
     }
 
-    // MODIFIES: this
-    // EFFECTS: processes user input
+    //MODIFIES: this
+    //EFFECTS: processes user input
     private void runTracker() {
         String command;
         init();
@@ -44,7 +45,7 @@ public class TrackerApp {
             } else {
                 processCommand(command);
             }
-            //maintainSorted(); future data persistence method
+            maintainSorted();
         }
 
         System.out.println("Would you like to save the application?");
@@ -55,8 +56,8 @@ public class TrackerApp {
     }
 
 
-    // MODIFIES: this
-    // EFFECTS: initializes accounts
+    //MODIFIES: this
+    //EFFECTS: initializes accounts
     private void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -69,7 +70,7 @@ public class TrackerApp {
         }
     }
 
-    // EFFECTS: returns string name of selected user profile
+    //EFFECTS: returns string name of selected user profile
     private String chooseProfile() {
         System.out.println("What user profile would you like to load?");
         return input.next().toLowerCase();
@@ -77,6 +78,7 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: initializes recipeBook, ingredientList, tracker
+    // throws IOException if user is invalid
     private void loadData(String user) throws IOException {
         source = "./data/" + user + "/";
         ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
@@ -106,7 +108,13 @@ public class TrackerApp {
         }
     }
 
-    // EFFECTS: displays menu of options to user
+    //MODIFIES: this
+    //EFFECTS: keeps data field lists in sorted order
+    private void maintainSorted() {
+        //IMPLEMENT SORTING METHODS
+    }
+
+    //EFFECTS: displays menu of options to user
     private void displayMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\ti -> ingredients");
@@ -116,8 +124,8 @@ public class TrackerApp {
         System.out.println("\tq -> quit");
     }
 
-    // MODIFIES: this
-    // EFFECTS: processes user command
+    //MODIFIES: this
+    //EFFECTS: processes user command
     private void processCommand(String command) {
         switch (command) {
             case "i":
@@ -165,6 +173,7 @@ public class TrackerApp {
         return selection.equals("y");
     }
 
+
     //MODIFIES: this
     //EFFECTS: add, read, edit, remove ingredients
     private void doIngredient(String action) {
@@ -173,8 +182,10 @@ public class TrackerApp {
                 addIngredients();
                 break;
             case "e":
+                editIngredient();
+                break;
             case "r":
-                System.out.println("This feature will be implemented in Phase 2");
+                removeIngredient();
                 break;
             case "s":
                 seeIngredients();
@@ -190,7 +201,11 @@ public class TrackerApp {
     private void addIngredients() {
         boolean repeat = true;
         while (repeat) {
-            addIngredient("a new ingredient");
+            try {
+                addIngredient("a new ingredient");
+            } catch (InvalidInputException e) {
+                System.out.println("Entered ingredient was invalid");
+            }
             System.out.print("Would you like to add another ingredient?");
             repeat = getYesNo();
         }
@@ -198,17 +213,75 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: adds entered ingredient to ingredientList
-    //Method is non-robust, will be improved with exception throwing in phase 2
-    private void addIngredient(String ingredientID) {
-        System.out.println("Enter " + ingredientID + " in the tab separated form: \nName \t\t\tServing \tCalories "
-                + "\tProtein \tCarbs \tFat");
-        ingredientList.add(new Ingredient(input.next().split("\t+")));
+    // throws InvalidInputException if input is improperly formatted
+    private void addIngredient(String ingredientID) throws InvalidInputException {
+        try {
+            System.out.println("Enter " + ingredientID + " in the tab separated form: \nName \t\t\tServing \tCalories "
+                    + "\tProtein \tCarbs \tFat");
+            ingredientList.add(new Ingredient(input.next().split("\t+")));
+        } catch (NumberFormatException e) {
+            throw new InvalidInputException();
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: replaces selected ingredient with new decleration
+    private void editIngredient() {
+        System.out.println("Enter the name of the ingredient to edit:");
+        String name = input.next();
+        Ingredient toEdit = findIngredient(name);
+        if (findIngredient(name) == null) {
+            System.out.println("That ingredient is not in the list");
+            return;
+        }
+        System.out.println("Given the current declaration of " + name
+                + ": \nName \t\t\tServing \tCalories\tProtein \tCarbs \tFat");
+        printIngredient(toEdit);
+        System.out.println("\n");
+        try {
+            addIngredient("your new declaration of " + name);
+        } catch (InvalidInputException e) {
+            System.out.println("Entered ingredient was invalid");
+            return;
+        }
+        deleteIngredient(toEdit);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: removes selected ingredient from ingredientList
+    private void removeIngredient() {
+        System.out.println("Enter the name of the ingredient to delete:");
+        String name = input.next();
+        Ingredient toDelete = findIngredient(name);
+        if (findIngredient(name) == null) {
+            System.out.println("That ingredient is not in the list");
+            return;
+        }
+        System.out.println("Confirm you would like to delete " + name
+                + ": \nName \t\t\tServing \tCalories\tProtein \tCarbs \tFat");
+        printIngredient(toDelete);
+        System.out.println();
+        if (!getYesNo()) {
+            return;
+        }
+        deleteIngredient(toDelete);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: deletes ingredient from ingredientList
+    private void deleteIngredient(Ingredient toDelete) {
+        for (int i = 0; i < ingredientList.size(); i++) {
+            if (ingredientList.get(i).getIngredientName().equals(toDelete.getIngredientName())) {
+                ingredientList.remove(i);
+                break;
+            }
+        }
     }
 
     //EFFECTS: prints ingredientList
     private void seeIngredients() {
-        System.out.println(("These are the current known ingredients (units in grams): \nName \t\t\tServing \tCalories"
-                + "\tProtein \tCarbs \tFat"));
+        System.out.println("These are the current known ingredients (units in grams): \nName \t\t\tServing \tCalories"
+                + "\tProtein \tCarbs \tFat");
         for (Ingredient ingredient: ingredientList) {
             printIngredient(ingredient);
             System.out.println();
@@ -281,16 +354,21 @@ public class TrackerApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: adds entered recipe to recipe book, if toSave == true and return null, or return recipe
+    //EFFECTS: adds entered recipe to recipe book, if toSave == true then return null, or return recipe
     private Recipe addRecipe(String recipeName) {
-        ArrayList<String> recipeString = recipeInput();
-        ArrayList<Portion> ingredients = recipeProcess(recipeString);
-        Recipe newRecipe = new Recipe(ingredients, recipeName);
-        if (newRecipe.getToSave()) {
-            recipeBook.add(newRecipe);
+        try {
+            ArrayList<String> recipeString = recipeInput();
+            ArrayList<Portion> ingredients = recipeProcess(recipeString);
+            Recipe newRecipe = new Recipe(ingredients, recipeName);
+            if (newRecipe.getToSave()) {
+                recipeBook.add(newRecipe);
+                return null;
+            } else {
+                return newRecipe;
+            }
+        } catch (Exception e) {
+            System.out.println("Entered recipe was invalid");
             return null;
-        } else {
-            return newRecipe;
         }
     }
 
@@ -308,9 +386,9 @@ public class TrackerApp {
         return recipeString;
     }
 
-    //REQUIRES: recipeString elements are properly formatted, as toPortion call is not robust
     //EFFECTS: converts recipeString into arrayList<Portion>
-    private ArrayList<Portion> recipeProcess(ArrayList<String> recipeString) {
+    // throws Exception if toPortion threw an exception
+    private ArrayList<Portion> recipeProcess(ArrayList<String> recipeString) throws Exception {
         ArrayList<Portion> portions = new ArrayList<>();
         for (String portionString: recipeString) {
             portions.add(toPortion(portionString.split("\t+")));
@@ -318,17 +396,21 @@ public class TrackerApp {
         return portions;
     }
 
-    //REQUIRES: portionStrings[1] is a string casted int
     //EFFECTS: converts ingredient name and mass to portion
-    private Portion toPortion(String[] portionStrings) {
+    // throws Exception if mass input is not a string casted integer, or unexpected Exception in new Portion call
+    private Portion toPortion(String[] portionStrings) throws Exception {
         String name = portionStrings[0];
-        int mass = Integer.parseInt(portionStrings[1]);
         Ingredient ingredient = findIngredient(name);
-        if (ingredient == null) {
-            System.out.println(name + " is not a recognized ingredient.");
-            addIngredient(name);
-            ingredient = findIngredient(name);
+        while (ingredient == null) {
+            try {
+                System.out.println(name + " is not a recognized ingredient.");
+                addIngredient(name);
+                ingredient = findIngredient(name);
+            } catch (InvalidInputException e) {
+                System.out.println("Entered ingredient was invalid");
+            }
         }
+        int mass = Integer.parseInt(portionStrings[1]);
         return new Portion(ingredient, mass);
     }
 
@@ -359,7 +441,6 @@ public class TrackerApp {
     }
 
     //EFFECTS: returns recipe with search name or null if not found
-    //Method is not robust, handler must be robust
     private Recipe findRecipe(String name) {
         for (Recipe r: recipeBook) {
             if (name.equals(r.getName())) {
@@ -368,6 +449,7 @@ public class TrackerApp {
         }
         return null;
     }
+
 
     //MODIFIES: this
     //EFFECTS: adds, edits, removes and renders meals
@@ -394,7 +476,11 @@ public class TrackerApp {
     private void addMeals() {
         boolean repeat = true;
         while (repeat) {
-            addMeal();
+            try {
+                addMeal();
+            } catch (Exception e) {
+                System.out.println("Entered Meal was invalid");
+            }
             System.out.print("Would you like to add another meal?");
             repeat = getYesNo();
         }
@@ -402,8 +488,8 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: adds a meal to tracker
-    //input handlers are non-robust, improved functionality in phase 2
-    private void addMeal() {
+    // throws Exception if mass and time fields are not string casted integers, or unexpected Exception in new Meal call
+    private void addMeal() throws Exception {
         String recipeStyle = getRecipeStyle();
         Recipe mealRecipe;
         if (recipeStyle.equals("k")) {
@@ -416,9 +502,9 @@ public class TrackerApp {
             mealRecipe = newRecipeMeal();
         }
         System.out.println("What was the mass of your meal");
-        int mass = Integer.parseInt(input.next());
+        int mass = input.nextInt();
         System.out.println("What time did you eat this meal? Enter the hour in 24 hour form");
-        int time = Integer.parseInt(input.next());
+        int time = input.nextInt();
         tracker.add(new Meal(mealRecipe, mass, time));
     }
 
@@ -483,7 +569,13 @@ public class TrackerApp {
         for (Meal m : tracker) {
             mealPortions.add(m.getTotal());
         }
-        Recipe dailyTotal = new Recipe(mealPortions, date);
+        Recipe dailyTotal;
+        try {
+            dailyTotal = new Recipe(mealPortions, date);
+        } catch (NoIngredientsException e) {
+            System.out.println("No meals to show statistics on");
+            return;
+        }
         printIngredient(dailyTotal.getTotal().getIngredient());
         System.out.println();
     }

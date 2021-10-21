@@ -13,9 +13,7 @@ public class Ingredient implements Writable {
     private final int protein;
     private final int carbs;
     private final int fat;
-
-
-    //REQUIRES: 0 < ingredientName.length() < 16
+    
     //MODIFIES: this
     //EFFECTS: All parameters are assigned to field of the same name
     public Ingredient(String ingredientName, int mass, int calories, int protein, int carbs, int fat) {
@@ -27,10 +25,10 @@ public class Ingredient implements Writable {
         this.fat = fat;
     }
 
-    //REQUIRES: 0 < ingredientName.length() < 16, parameter[1:5] are string casted integers
     //MODIFIES: this
-    //EFFECTS: All parameters are assigned to field of the same name
-    public Ingredient(String[] parameters) {
+    //EFFECTS: All parameters are assigned to field of the same name,
+    // throws NumberFormatException if any of parameter[1:5] are not string casted integers
+    public Ingredient(String[] parameters) throws NumberFormatException {
         this.ingredientName = parameters[0];
         this.servingSize = Integer.parseInt(parameters[1]);
         this.calories = Integer.parseInt(parameters[2]);
@@ -83,6 +81,7 @@ public class Ingredient implements Writable {
         return fields;
     }
 
+    //EFFECTS: returns ingredient as formatted JSONObject
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

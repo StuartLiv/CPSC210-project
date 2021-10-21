@@ -18,23 +18,22 @@ import java.util.stream.Stream;
 public class JsonReaderIngredient {
     protected String source;
 
-    // EFFECTS: constructs reader to read from source file
+    //MODIFIES: this
+    //EFFECTS: constructs reader to read from source file
     public JsonReaderIngredient(String source) {
         this.source = source;
     }
 
-    // EFFECTS: reads source file as string and returns it
+    //EFFECTS: reads source file as string and returns it
     protected String readFile(String source) throws IOException {
         StringBuilder contentBuilder = new StringBuilder();
-
         try (Stream<String> stream = Files.lines(Paths.get(source), StandardCharsets.UTF_8)) {
             stream.forEach(contentBuilder::append);
         }
-
         return contentBuilder.toString();
     }
 
-    // EFFECTS: reads ingredientList from file and returns it;
+    //EFFECTS: reads ingredientList from file and returns it;
     // throws IOException if an error occurs reading data from file
     public ArrayList<Ingredient> readIngredient() throws IOException {
         String jsonData = readFile(source);

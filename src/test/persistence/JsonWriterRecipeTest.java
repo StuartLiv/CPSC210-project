@@ -63,7 +63,7 @@ public class JsonWriterRecipeTest {
 
             assertEquals(recipeBook.get(0).getTotal().getIngredient().getFields(),
                     result.get(0).getTotal().getIngredient().getFields());
-        } catch (IOException e) {
+        } catch (Exception e) {
             fail("Exception should not have been thrown");
         }
     }

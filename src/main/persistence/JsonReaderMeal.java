@@ -2,6 +2,7 @@ package persistence;
 
 import model.Meal;
 import model.Recipe;
+import model.exceptions.InvalidInputException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,12 +15,12 @@ import java.util.ArrayList;
 //Reader method for meals file
 public class JsonReaderMeal extends  JsonReaderRecipe {
 
-    // EFFECTS: constructs reader to read from source file
+    //EFFECTS: constructs reader to read from source file
     public JsonReaderMeal(String source) {
         super(source);
     }
 
-    // EFFECTS: reads mealList from file and returns it;
+    //EFFECTS: reads mealList from file and returns it;
     // throws IOException if an error occurs reading data from file
     public ArrayList<Meal> readMeal() throws IOException {
         String jsonData = readFile(source);
@@ -40,9 +41,13 @@ public class JsonReaderMeal extends  JsonReaderRecipe {
 
     //EFFECTS: returns meal from jsonObject
     private Meal parseMeal(JSONObject jsonObject) {
-        Recipe mealRecipe = parseRecipe(jsonObject.getJSONObject("Recipe"));
-        int mass = jsonObject.getInt("mass");
-        int time = jsonObject.getInt("time");
-        return new Meal(mealRecipe, mass, time);
+        try {
+            Recipe mealRecipe = parseRecipe(jsonObject.getJSONObject("Recipe"));
+            int mass = jsonObject.getInt("mass");
+            int time = jsonObject.getInt("time");
+            return new Meal(mealRecipe, mass, time);
+        } catch (InvalidInputException e) {
+            throw new RuntimeException("files have invalid meals");
+        }
     }
 }

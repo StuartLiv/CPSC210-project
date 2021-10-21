@@ -1,7 +1,6 @@
 package persistence;
 
 import model.Meal;
-import model.Recipe;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -15,12 +14,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class JsonReaderMealTest {
 
-
     @Test
     void testReaderNoFile() {
         JsonReaderMeal reader = new JsonReaderMeal("./data/noSuchFile.json");
         try {
-            ArrayList<Meal> mealList = reader.readMeal();
+            reader.readMeal();
             fail("IOException expected");
         } catch (IOException e) {
             // pass

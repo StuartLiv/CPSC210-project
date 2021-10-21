@@ -64,7 +64,7 @@ public class JsonWriterMealTest {
                     result.get(0).getTotal().getIngredient().getFields());
             assertEquals(tracker.get(0).getMass(), result.get(0).getMass());
             assertEquals(tracker.get(0).getTime(), result.get(0).getTime());
-        } catch (IOException e) {
+        } catch (Exception e) {
             fail("Exception should not have been thrown");
         }
     }

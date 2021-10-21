@@ -1,6 +1,7 @@
 package model;
 
-import org.json.JSONArray;
+import model.exceptions.InvalidMassException;
+
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -10,10 +11,13 @@ public class Portion implements Writable {
     private int mass;
     private final double factor;
 
-    //REQUIRES: mass >= 0, ingredient is non-null
     //MODIFIES: this
     //EFFECTS: parameters are assigned to field of same name, and a conversion factor is calculated
-    public Portion(Ingredient ingredient, int mass) {
+    // throws InvalidMassException if mass is negative
+    public Portion(Ingredient ingredient, int mass) throws InvalidMassException {
+        if (mass < 0) {
+            throw new InvalidMassException();
+        }
         this.ingredient = ingredient;
         this.mass = mass;
         this.factor = getConversion();
@@ -47,7 +51,6 @@ public class Portion implements Writable {
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));
     }
 
-    //REQUIRES: factor>=0
     //MODIFIES: this.ingredient
     //EFFECTS: scales ingredient to provided factor
     public void scaleIngredient(double factor) {
@@ -57,9 +60,9 @@ public class Portion implements Writable {
         mass = convert(ingredient.getServingSize(), factor);
     }
 
+    //EFFECTS: returns portion as formatted JSONObject
     @Override
     public JSONObject toJson() {
-        JSONArray jsonArray = new JSONArray();
         JSONObject json = ingredient.toJson();
         json.put("mass", mass);
         return json;

@@ -1,5 +1,7 @@
 package model;
 
+import model.exceptions.InvalidInputException;
+import model.exceptions.NoIngredientsException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -13,11 +15,13 @@ public class Recipe implements Writable {
     private final String recipeName;
     private boolean toSave = true;
 
-    //REQUIRES: ingredients is an initialized list
     //MODIFIES: this
     //EFFECTS: Initialize name, and scale ingredient serving sizes
-    public Recipe(ArrayList<Portion> ingredients, String name) {
-        //scale ingredients to getServingSize() = Portion.mass
+    // throws NoIngredientsException if ingredients is empty
+    public Recipe(ArrayList<Portion> ingredients, String name) throws NoIngredientsException {
+        if (ingredients == null) {
+            throw new NoIngredientsException();
+        }
         for (Portion p: ingredients) {
             p.scaleIngredient();
         }
@@ -46,10 +50,14 @@ public class Recipe implements Writable {
 
     //EFFECTS: calculate and total nutrition statistics for a recipe
     public Portion getTotal() {
-        int mass = this.massTotal();
-        Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
-                this.carbTotal(), this.fatTotal());
-        return new Portion(sum, mass);
+        try {
+            int mass = this.massTotal();
+            Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
+                    this.carbTotal(), this.fatTotal());
+            return new Portion(sum, mass);
+        } catch (InvalidInputException e) {
+            throw new RuntimeException("Invalid portion in Recipe.getTotal");
+        }
     }
 
     //EFFECTS: returns sum of the masses of all portions
@@ -97,16 +105,17 @@ public class Recipe implements Writable {
         return sum;
     }
 
+    //EFFECTS: returns recipe as formatted JSONObject
     @Override
-    //EFFECTS: returns json object of recipe
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
-
-        json.put("name", recipeName);
         JSONArray jsonArray = new JSONArray();
+        json.put("name", recipeName);
+
         for (Portion portion: portions) {
             jsonArray.put(portion.toJson());
         }
+
         json.put("portions", jsonArray);
         return json;
     }

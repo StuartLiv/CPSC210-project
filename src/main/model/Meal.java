@@ -1,26 +1,32 @@
 package model;
 
-import org.json.JSONArray;
+import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
+import model.exceptions.NoRecipeException;
+
 import org.json.JSONObject;
 import persistence.Writable;
 
-import java.time.*;
-
-
 //Represents a meal with recipe, summary total, serving size, and time of meal in hours
 public class Meal implements Writable {
-    private Recipe recipe;
+    private final Recipe recipe;
     private Portion total;
-    private int serving;
-    private int time;
+    private final int serving;
+    private final int time;
 //    private LocalDate date;
 //    private LocalTime mealTime;
     //Implement more complex field for time in phase 2
-
-    //REQUIRES: 0 <= time <= 23, recipe is non-null, mass >=0
+    
     //MODIFIES: this
     //EFFECTS: fields are set, and total nutrition for meal is calculated
-    public Meal(Recipe recipe, int mass, int time) {
+    // throws NoRecipeException if recipe is null, throws InvalidMassException if mass is negative,
+    // both of supertype InvalidInputException
+    public Meal(Recipe recipe, int mass, int time) throws InvalidInputException {
+        if (recipe == null) {
+            throw new NoRecipeException();
+        } else if (mass < 0) {
+            throw new InvalidMassException();
+        }
         this.recipe = recipe;
         this.serving = mass;
         this.time = time;
@@ -56,10 +62,8 @@ public class Meal implements Writable {
         return serving;
     }
 
-    //More methods to come, for ui integration
-
+    //EFFECTS: converts returns meal as formatted JSONObject
     @Override
-    //EFFECTS: converts meal to json
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("Recipe", recipe.toJson());

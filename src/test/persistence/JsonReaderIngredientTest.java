@@ -2,7 +2,6 @@ package persistence;
 
 import model.Ingredient;
 import org.junit.jupiter.api.Test;
-import persistence.JsonReaderIngredient;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class JsonReaderIngredientTest {
     void testReaderNoFile() {
         JsonReaderIngredient reader = new JsonReaderIngredient("./data/noSuchFile.json");
         try {
-            ArrayList<Ingredient> ingredientList = reader.readIngredient();
+            reader.readIngredient();
             fail("IOException expected");
         } catch (IOException e) {
             // pass

@@ -3,6 +3,7 @@ package persistence;
 import model.Ingredient;
 import model.Portion;
 import model.Recipe;
+import model.exceptions.InvalidInputException;
 import ui.TrackerApp;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,12 +17,12 @@ import java.util.ArrayList;
 //Reader method for recipes file
 public class JsonReaderRecipe extends JsonReaderIngredient {
 
-    // EFFECTS: constructs reader to read from source file
+    //EFFECTS: constructs reader to read from source file
     public JsonReaderRecipe(String source) {
         super(source);
     }
 
-    // EFFECTS: reads recipeList from file and returns it;
+    //EFFECTS: reads recipeList from file and returns it;
     // throws IOException if an error occurs reading data from file
     public ArrayList<Recipe> readRecipe() throws IOException {
         String jsonData = readFile(source);
@@ -29,7 +30,7 @@ public class JsonReaderRecipe extends JsonReaderIngredient {
         return parseRecipes(jsonObject);
     }
 
-    // EFFECTS: parses recipeList from JSON object and returns it
+    //EFFECTS: parses recipeList from JSON object and returns it
     private ArrayList<Recipe> parseRecipes(JSONObject jsonObject) {
         ArrayList<Recipe> recipeList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("Recipes");
@@ -40,12 +41,16 @@ public class JsonReaderRecipe extends JsonReaderIngredient {
         return recipeList;
     }
 
-    // EFFECTS: parses recipe from JSONObject
+    //EFFECTS: parses recipe from JSONObject
     protected Recipe parseRecipe(JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        ArrayList<Portion> ingredients;
-        ingredients = parsePortions(jsonObject);
-        return new Recipe(ingredients, name);
+        try {
+            String name = jsonObject.getString("name");
+            ArrayList<Portion> ingredients;
+            ingredients = parsePortions(jsonObject);
+            return new Recipe(ingredients, name);
+        } catch (InvalidInputException e) {
+            throw new RuntimeException("files have invalid recipes");
+        }
     }
 
     //EFFECTS: parses portion fields from JSONObject
@@ -61,8 +66,12 @@ public class JsonReaderRecipe extends JsonReaderIngredient {
 
     //EFFECTS: parses individual portion from JsonObject
     private Portion parsePortion(JSONObject jsonObject) {
-        Ingredient ingredient = parseIngredient(jsonObject);
-        int mass = (jsonObject.getInt("mass"));
-        return new Portion(ingredient, mass);
+        try {
+            Ingredient ingredient = parseIngredient(jsonObject);
+            int mass = (jsonObject.getInt("mass"));
+            return new Portion(ingredient, mass);
+        } catch (InvalidInputException e) {
+            throw new RuntimeException("files have invalid portions");
+        }
     }
 }
