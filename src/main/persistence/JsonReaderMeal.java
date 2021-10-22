@@ -44,8 +44,9 @@ public class JsonReaderMeal extends  JsonReaderRecipe {
         try {
             Recipe mealRecipe = parseRecipe(jsonObject.getJSONObject("Recipe"));
             int mass = jsonObject.getInt("mass");
-            int time = jsonObject.getInt("time");
-            return new Meal(mealRecipe, mass, time);
+            String time = jsonObject.getString("time");
+            String date = jsonObject.getString("date");
+            return new Meal(mealRecipe, mass, date, time);
         } catch (InvalidInputException e) {
             throw new RuntimeException("files have invalid meals");
         }

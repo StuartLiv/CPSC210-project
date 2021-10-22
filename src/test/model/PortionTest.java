@@ -1,6 +1,7 @@
 package model;
 
-import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,12 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class PortionTest {
+    private Ingredient oat;
+
+    @BeforeEach
+    void runBefore() {
+        oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
+    }
 
     @Test
     //tests scaling of ingredient, and getters
     void scaleIngredientTest() {
         try {
-            Ingredient oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
             Portion OatsScaled = new Portion(oat, 50);
             OatsScaled.scaleIngredient();
             ArrayList<String> expected = new ArrayList<>();
@@ -27,7 +33,7 @@ public class PortionTest {
 
             assertEquals(OatsScaled.getMass(), OatsScaled.getIngredient().getServingSize());
             assertEquals(expected, OatsScaled.getIngredient().getFields());
-        } catch (InvalidInputException e) {
+        } catch (InvalidMassException e) {
             fail("Invalid Ingredient");
         }
     }
@@ -36,7 +42,6 @@ public class PortionTest {
     //test overloaded scaleIngredient method
     void scaleIngredientFactorTest() {
         try {
-            Ingredient oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
             Portion OatsScaled = new Portion(oat, 50);
             OatsScaled.scaleIngredient(0.333);
             ArrayList<String> expected = new ArrayList<>();
@@ -49,8 +54,18 @@ public class PortionTest {
 
             assertEquals(33, OatsScaled.getIngredient().getServingSize());
             assertEquals(expected, OatsScaled.getIngredient().getFields());
-        } catch (InvalidInputException e) {
+        } catch (InvalidMassException e) {
             fail("Invalid Ingredient");
+        }
+    }
+
+    @Test
+    void invalidMassExceptionTest() {
+        try {
+            new Portion(oat, -50);
+            fail("Exception not triggered");
+        } catch (InvalidMassException e) {
+            //pass
         }
     }
 }

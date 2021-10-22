@@ -19,7 +19,7 @@ public class Recipe implements Writable {
     //EFFECTS: Initialize name, and scale ingredient serving sizes
     // throws NoIngredientsException if ingredients is empty
     public Recipe(ArrayList<Portion> ingredients, String name) throws NoIngredientsException {
-        if (ingredients == null) {
+        if (Objects.equals(ingredients, new ArrayList<Portion>())) {
             throw new NoIngredientsException();
         }
         for (Portion p: ingredients) {

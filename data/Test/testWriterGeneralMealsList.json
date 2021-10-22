@@ -1,4 +1,5 @@
 {"Meals": [{
+    "date": "2021-10-21",
     "Recipe": {
         "name": "Overnight Oats",
         "portions": [
@@ -27,5 +28,5 @@
         ]
     },
     "mass": 281,
-    "time": 7
+    "time": "07:00"
 }]}

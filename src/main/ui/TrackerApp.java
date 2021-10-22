@@ -8,6 +8,7 @@ import persistence.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 //Calorie and Macronutrient tracker app
@@ -57,7 +58,7 @@ public class TrackerApp {
 
 
     //MODIFIES: this
-    //EFFECTS: initializes accounts
+    //EFFECTS: initializes account
     private void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -110,8 +111,12 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: keeps data field lists in sorted order
+    //Using object comparison from oracle docs:
+    //Link: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparing-java.util.function.Function-
     private void maintainSorted() {
-        //IMPLEMENT SORTING METHODS
+        ingredientList.sort(Comparator.comparing(Ingredient::getIngredientName));
+        recipeBook.sort((Comparator.comparing(Recipe::getName)));
+        tracker.sort((Comparator.comparing(Meal::getDateTimeString)));
     }
 
     //EFFECTS: displays menu of options to user
@@ -225,7 +230,7 @@ public class TrackerApp {
     }
 
     //MODIFIES: this
-    //EFFECTS: replaces selected ingredient with new decleration
+    //EFFECTS: replaces selected ingredient with new declaration
     private void editIngredient() {
         System.out.println("Enter the name of the ingredient to edit:");
         String name = input.next();
@@ -244,7 +249,7 @@ public class TrackerApp {
             System.out.println("Entered ingredient was invalid");
             return;
         }
-        deleteIngredient(toEdit);
+        deleteIngredient(name);
     }
 
     //MODIFIES: this
@@ -253,7 +258,7 @@ public class TrackerApp {
         System.out.println("Enter the name of the ingredient to delete:");
         String name = input.next();
         Ingredient toDelete = findIngredient(name);
-        if (findIngredient(name) == null) {
+        if (toDelete == null) {
             System.out.println("That ingredient is not in the list");
             return;
         }
@@ -264,14 +269,14 @@ public class TrackerApp {
         if (!getYesNo()) {
             return;
         }
-        deleteIngredient(toDelete);
+        deleteIngredient(name);
     }
 
     //MODIFIES: this
-    //EFFECTS: deletes ingredient from ingredientList
-    private void deleteIngredient(Ingredient toDelete) {
+    //EFFECTS: deletes ingredient of given name from ingredientList
+    private void deleteIngredient(String name) {
         for (int i = 0; i < ingredientList.size(); i++) {
-            if (ingredientList.get(i).getIngredientName().equals(toDelete.getIngredientName())) {
+            if (ingredientList.get(i).getIngredientName().equals(name)) {
                 ingredientList.remove(i);
                 break;
             }
@@ -328,8 +333,10 @@ public class TrackerApp {
                 addRecipes();
                 break;
             case "e":
+                editRecipe();
+                break;
             case "r":
-                System.out.println("This feature will be implemented in Phase 2");
+                removeRecipe();
                 break;
             case "s":
                 seeRecipes();
@@ -345,9 +352,13 @@ public class TrackerApp {
     private void addRecipes() {
         boolean repeat = true;
         while (repeat) {
-            System.out.println("What is the name of this recipe?");
-            String recipeName = input.next();
-            addRecipe(recipeName);
+            try {
+                System.out.println("What is the name of this recipe?");
+                String recipeName = input.next();
+                addRecipe(recipeName);
+            } catch (Exception e) {
+                System.out.println("Entered recipe was invalid");
+            }
             System.out.print("Would you like to add another recipe?");
             repeat = getYesNo();
         }
@@ -355,21 +366,17 @@ public class TrackerApp {
 
     //MODIFIES: this
     //EFFECTS: adds entered recipe to recipe book, if toSave == true then return null, or return recipe
-    private Recipe addRecipe(String recipeName) {
-        try {
-            ArrayList<String> recipeString = recipeInput();
-            ArrayList<Portion> ingredients = recipeProcess(recipeString);
-            Recipe newRecipe = new Recipe(ingredients, recipeName);
-            if (newRecipe.getToSave()) {
-                recipeBook.add(newRecipe);
-                return null;
-            } else {
-                return newRecipe;
-            }
-        } catch (Exception e) {
-            System.out.println("Entered recipe was invalid");
+    private Recipe addRecipe(String recipeName) throws Exception {
+        ArrayList<String> recipeString = recipeInput();
+        ArrayList<Portion> ingredients = recipeProcess(recipeString);
+        Recipe newRecipe = new Recipe(ingredients, recipeName);
+        if (newRecipe.getToSave()) {
+            recipeBook.add(newRecipe);
             return null;
+        } else {
+            return newRecipe;
         }
+
     }
 
     //EFFECTS: gets input for a recipe
@@ -412,6 +419,58 @@ public class TrackerApp {
         }
         int mass = Integer.parseInt(portionStrings[1]);
         return new Portion(ingredient, mass);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: replaces selected recipe with new declaration
+    private void editRecipe() {
+        System.out.println("Enter the name of the recipe to edit:");
+        String name = input.next();
+        Recipe toEdit = findRecipe(name);
+        if (toEdit == null) {
+            System.out.println("That recipe is not in the list");
+            return;
+        }
+        System.out.println("Given the current declaration of " + name + ":\n");
+        printRecipe(toEdit);
+        System.out.println("\nEnter your new declaration of " + name);
+        try {
+            addRecipe(name);
+            deleteRecipe(name);
+        } catch (Exception e) {
+            System.out.println("Entered recipe was invalid");
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: removes selected recipe from recipeBook
+    private void removeRecipe() {
+        System.out.println("Enter the name of the recipe to delete:");
+        String name = input.next();
+        Recipe toDelete = findRecipe(name);
+        if (toDelete == null) {
+            System.out.println("That recipe is not in the list");
+            return;
+        }
+        System.out.println("Confirm you would like to delete ");
+        System.out.println(name + ":");
+        printRecipe(toDelete);
+        System.out.println();
+        if (!getYesNo()) {
+            return;
+        }
+        deleteRecipe(name);
+    }
+
+    //MODIFIES: this
+    //EFFECTS: deletes toDelete from recipeBook
+    private void deleteRecipe(String name) {
+        for (int i = 0; i < recipeBook.size(); i++) {
+            if (recipeBook.get(i).getName().equals(name)) {
+                recipeBook.remove(i);
+                break;
+            }
+        }
     }
 
     //EFFECTS: prints recipeBook
@@ -459,11 +518,14 @@ public class TrackerApp {
                 addMeals();
                 break;
             case "e":
+                editMeal();
+                break;
             case "r":
-                System.out.println("This feature will be implemented in Phase 2");
+                removeMeal();
                 break;
             case "s":
-                seeMeals();
+                System.out.println("These are your stored meals:\n");
+                seeMeals(tracker, "", false);
                 break;
             default:
                 System.out.println("Selection not valid...");
@@ -481,7 +543,7 @@ public class TrackerApp {
             } catch (Exception e) {
                 System.out.println("Entered Meal was invalid");
             }
-            System.out.print("Would you like to add another meal?");
+            System.out.print("Would you like to add another meal? ");
             repeat = getYesNo();
         }
     }
@@ -494,18 +556,20 @@ public class TrackerApp {
         Recipe mealRecipe;
         if (recipeStyle.equals("k")) {
             mealRecipe = knownRecipeMeal();
-            if (mealRecipe == null) {
-                System.out.println("Sorry, I don't recognize that recipe");
-                return;
-            }
         } else {
             mealRecipe = newRecipeMeal();
         }
+        if (mealRecipe == null) {
+            System.out.println("Invalid recipe");
+            return;
+        }
         System.out.println("What was the mass of your meal");
         int mass = input.nextInt();
-        System.out.println("What time did you eat this meal? Enter the hour in 24 hour form");
-        int time = input.nextInt();
-        tracker.add(new Meal(mealRecipe, mass, time));
+        System.out.println("What date did you eat this meal? Enter in YYYY:MM:DD form, or \"today\" if it was today");
+        String date = input.next();
+        System.out.println("What time did you eat this meal? Enter the time in HH:MM form");
+        String time = input.next();
+        tracker.add(new Meal(mealRecipe, mass, date, time));
     }
 
     //EFFECTS: finds recipe of ui input name and return it
@@ -518,15 +582,20 @@ public class TrackerApp {
 
     //EFFECTS: takes new user recipe input and saves, or not
     private Recipe newRecipeMeal() {
-        String recipeName;
-        System.out.print("Would you like to save the new recipe?");
-        if (getYesNo()) {
-            System.out.println("What is the recipe name?");
-            recipeName = input.next();
-            addRecipe(recipeName);
-            return findRecipe(recipeName);
-        } else {
-            return addRecipe("Unsaved Recipe");
+        try {
+            String recipeName;
+            System.out.print("Would you like to save the new recipe?");
+            if (getYesNo()) {
+                System.out.println("What is the recipe name?");
+                recipeName = input.next();
+                addRecipe(recipeName);
+                return findRecipe(recipeName);
+            } else {
+                return addRecipe("Unsaved Recipe");
+            }
+        } catch (Exception e) {
+            System.out.println("Entered recipe was invalid");
+            return null;
         }
     }
 
@@ -543,40 +612,143 @@ public class TrackerApp {
         return selection;
     }
 
+    //MODIFIES: this
+    //EFFECTS: edits selected meal in tracker
+    private void editMeal() {
+        try {
+            Meal toEdit = selectMeal("edit");
+            if (toEdit == null) {
+                return;
+            }
+            System.out.println("Given the current declaration of this meal:\n");
+            System.out.println("Name \t\t\tServing \tCalories\tProtein \tCarbs \tFat\t\tMeal Mass\tDate\t\tMeal Time");
+            printMeal(toEdit);
+            addMeal();
+            tracker.remove(toEdit);
+        } catch (Exception e) {
+            System.out.println("Invalid edit choice");
+        }
+    }
+
+    //MODIFIES: this
+    //EFFECTS: removes selected meal in tracker
+    private void removeMeal() {
+        try {
+            Meal toDelete = selectMeal("remove");
+            if (toDelete == null) {
+                return;
+            }
+            System.out.println("Confirm you would like to delete:\n");
+            System.out.println("Name \t\t\tServing \tCalories\tProtein \tCarbs \tFat\t\tMeal Mass\tDate\t\tMeal Time");
+            printMeal(toDelete);
+            System.out.println();
+            getYesNo();
+            tracker.remove(toDelete);
+        } catch (Exception e) {
+            System.out.println("Invalid index choice");
+        }
+    }
+
+    //EFFECTS: lets user select a meal in tracker and returns it
+    private Meal selectMeal(String callerID) {
+        System.out.println("Enter the date the meal to " + callerID + " was eaten on:");
+        ArrayList<Meal> mealsOnDate = new ArrayList<>();
+        String date = input.next();
+        for (Meal m : tracker) {
+            if (m.getDateString().equals(date)) {
+                mealsOnDate.add(m);
+            }
+        }
+        if (mealsOnDate.size() == 0) {
+            System.out.println("No stored meals on that date");
+            return null;
+        }
+        System.out.println("Available Meals to select");
+        seeMeals(mealsOnDate, "Index", true);
+        System.out.println("Enter the index of the meal to " + callerID);
+        return mealsOnDate.get(input.nextInt() - 1);
+    }
+
     //EFFECTS: renders tracker
-    private void seeMeals() {
-        System.out.println("These are your stored meals:\n");
-        System.out.println("Name \t\t\tServing \tCalories\tProtein \tCarbs \tFat\t\tMeal Mass\tMeal Time\n");
-        for (Meal m: tracker) {
+    private void seeMeals(ArrayList<Meal> mealList, String lineEnd, boolean printIndex) {
+        System.out.println("Name \t\t\tServing \tCalories\tProtein \tCarbs \tFat\t\tMeal Mass\tDate\t\tMeal Time \t\t"
+                + lineEnd + "\n");
+        for (Meal m: mealList) {
             printMeal(m);
+            if (printIndex) {
+                System.out.println("\t\t" + mealList.indexOf(m) + 1);
+            } else {
+                System.out.println();
+            }
         }
     }
 
     //EFFECTS: prints a meal
     private void printMeal(Meal meal) {
         printIngredient(meal.getTotal().getIngredient());
-        System.out.println("\t\t" + meal.getMass() + "\t\t\t" + meal.getTime());
+        System.out.print("\t\t" + meal.getMass() + "\t\t\t" + meal.getDateString() + "\t" + meal.getTimeString());
 
     }
 
     //EFFECTS: prints summary and daily nutritional info
-    //NOTE: improved functionality in phase 2, with improved time implementation
     private void doStats() {
-        String date = "Oct 13, 2021"; //update in phase 2
         System.out.println("Total Daily Nutrition\n");
         System.out.println("Date \t\t\tServing \tCalories\tProtein \tCarbs \tFat");
-        ArrayList<Portion> mealPortions = new ArrayList<>();
-        for (Meal m : tracker) {
-            mealPortions.add(m.getTotal());
-        }
-        Recipe dailyTotal;
-        try {
-            dailyTotal = new Recipe(mealPortions, date);
-        } catch (NoIngredientsException e) {
+        ArrayList<Portion> dailyTotals = formatTotals(getDailyTotals());
+        if (dailyTotals.isEmpty()) {
             System.out.println("No meals to show statistics on");
             return;
         }
-        printIngredient(dailyTotal.getTotal().getIngredient());
-        System.out.println();
+        for (Portion p : dailyTotals) {
+            printIngredient(p.getIngredient());
+            System.out.println();
+        }
+    }
+
+    //EFFECTS: removes duplicates and null portions from dailyTotals
+    private ArrayList<Portion> formatTotals(ArrayList<Portion> dailyTotals) {
+        ArrayList<Portion> formattedTotals = new ArrayList<>();
+        boolean notInFormattedTools;
+        for (Portion total : dailyTotals) {
+            if (total != null) {
+                notInFormattedTools = true;
+                for (Portion p : formattedTotals) {
+                    notInFormattedTools = notInFormattedTools
+                            && !total.getIngredient().getIngredientName().equals(p.getIngredient().getIngredientName());
+                }
+                if (notInFormattedTools) {
+                    formattedTotals.add(total);
+                }
+            }
+        }
+        return formattedTotals;
+    }
+
+    //EFFECTS: returns daily totals of each day in tracker
+    //NOTE: list contains duplicates, and null portions
+    private ArrayList<Portion> getDailyTotals() {
+        ArrayList<Portion> totalsPerDay = new ArrayList<>();
+        ArrayList<Portion> dailyTotal = new ArrayList<>();
+        String date;
+        for (Meal meal : tracker) {
+            date = meal.getDateString();
+            for (Meal m : tracker) {
+                if (m.getDateString().equals(date)) {
+                    totalsPerDay.add(m.getTotal());
+                }
+            }
+            dailyTotal.add(getDayTotal(totalsPerDay, date));
+            totalsPerDay.clear();
+        }
+        return dailyTotal;
+    }
+
+    //EFFECTS: returns single day total from given meal totals that day
+    private Portion getDayTotal(ArrayList<Portion> totalsPerDay, String date) {
+        try {
+            return (new Recipe(totalsPerDay, date)).getTotal();
+        } catch (NoIngredientsException e) {
+            return null;
+        }
     }
 }

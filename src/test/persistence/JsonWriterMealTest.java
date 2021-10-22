@@ -51,7 +51,7 @@ public class JsonWriterMealTest {
                     new Ingredient("Oats", 100, 333, 11, 73, 3 ), 156));
             portions.add(new Portion (
                     new Ingredient("Milk", 250, 90, 9, 12, 0 ), 125));
-            tracker.add(new Meal ((new Recipe(portions, "Overnight Oats")), 281, 7));
+            tracker.add(new Meal ((new Recipe(portions, "Overnight Oats")), 281, "today", "07:00"));
             JsonWriterMeal writer = new JsonWriterMeal("./data/Test/testWriterGeneralMealsList.json");
             writer.open();
             writer.writeMeals(tracker);
@@ -63,7 +63,8 @@ public class JsonWriterMealTest {
             assertEquals(tracker.get(0).getTotal().getIngredient().getFields(),
                     result.get(0).getTotal().getIngredient().getFields());
             assertEquals(tracker.get(0).getMass(), result.get(0).getMass());
-            assertEquals(tracker.get(0).getTime(), result.get(0).getTime());
+            assertEquals(tracker.get(0).getTimeString(), result.get(0).getTimeString());
+            assertEquals(tracker.get(0).getDateString(), result.get(0).getDateString());
         } catch (Exception e) {
             fail("Exception should not have been thrown");
         }

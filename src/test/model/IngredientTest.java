@@ -32,4 +32,15 @@ class IngredientTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    //Exception test
+    void listIngredientExceptionTest() {
+        try {
+            new Ingredient(new String[]{"Oats", "100", "333", "no", "73", "3"});
+            fail("NumberFormatException not triggered");
+        } catch (NumberFormatException ignore) {
+            //pass
+        }
+    }
 }

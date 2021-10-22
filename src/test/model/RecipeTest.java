@@ -26,6 +26,16 @@ public class RecipeTest {
     }
 
     @Test
+    void noIngredientsTest() {
+        try {
+            new Recipe(new ArrayList<>(), "Empty");
+            fail("Exception not triggered");
+        } catch (NoIngredientsException e) {
+            //pass
+        }
+    }
+
+    @Test
     //Tests name retrieval
     void getNameTest() {
         try {

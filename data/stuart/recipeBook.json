@@ -1,27 +1,94 @@
-{"Recipes": [{
-    "name": "Overnight Oats",
-    "portions": [
-        {
-            "Ingredient": [
-                "Oats",
-                "156",
-                "519",
-                "17",
-                "114",
-                "5"
-            ],
-            "mass": 156
-        },
-        {
-            "Ingredient": [
-                "Milk",
-                "125",
-                "45",
-                "5",
-                "6",
-                "0"
-            ],
-            "mass": 125
-        }
-    ]
-}]}
+{"Recipes": [
+    {
+        "name": "Blueberry Milk",
+        "portions": [
+            {
+                "Ingredient": [
+                    "Blueberry",
+                    "50",
+                    "28",
+                    "0",
+                    "7",
+                    "0"
+                ],
+                "mass": 50
+            },
+            {
+                "Ingredient": [
+                    "Sugar",
+                    "25",
+                    "97",
+                    "0",
+                    "25",
+                    "0"
+                ],
+                "mass": 25
+            },
+            {
+                "Ingredient": [
+                    "Milk",
+                    "175",
+                    "63",
+                    "6",
+                    "8",
+                    "0"
+                ],
+                "mass": 175
+            }
+        ]
+    },
+    {
+        "name": "Blueberry Water",
+        "portions": [
+            {
+                "Ingredient": [
+                    "Water",
+                    "175",
+                    "0",
+                    "0",
+                    "0",
+                    "0"
+                ],
+                "mass": 175
+            },
+            {
+                "Ingredient": [
+                    "Blueberry",
+                    "75",
+                    "43",
+                    "1",
+                    "11",
+                    "1"
+                ],
+                "mass": 75
+            }
+        ]
+    },
+    {
+        "name": "Overnight Oats",
+        "portions": [
+            {
+                "Ingredient": [
+                    "Oats",
+                    "156",
+                    "519",
+                    "17",
+                    "114",
+                    "5"
+                ],
+                "mass": 156
+            },
+            {
+                "Ingredient": [
+                    "Milk",
+                    "125",
+                    "45",
+                    "5",
+                    "6",
+                    "0"
+                ],
+                "mass": 125
+            }
+        ]
+    }
+]}

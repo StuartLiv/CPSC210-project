@@ -1,9 +1,13 @@
 package model;
 
 import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidInputException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,13 +25,45 @@ class MealTest {
             ingredients.add(new Portion(
                     new Ingredient("Milk", 250, 90, 9, 12, 0), 125));
             oatmeal = new Recipe(ingredients, "Overnight Oats");
-            morningOatmeal = new Meal(oatmeal, 281, 7);
+            morningOatmeal = new Meal(oatmeal, 281, "today", "07:30");
         } catch (Exception e) {
             fail("Invalid runBefore initialization");
         }
     }
 
-    //Getter tests, as these will be methods for phase 2 and task 5
+    @Test
+    void invalidMassTest() {
+        try {
+            morningOatmeal = new Meal(oatmeal, -5, "today", "00:00");
+            fail("No exception");
+        } catch (InvalidInputException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidDateTest() {
+        try {
+            morningOatmeal = new Meal(oatmeal, 281, "yesterday", "00:00");
+            fail("No exception");
+        } catch (InvalidInputException e) {
+            fail("Mass exception not dateTime");
+        } catch (DateTimeException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidTimeTest() {
+        try {
+            morningOatmeal = new Meal(oatmeal, 281, "today", "25:62");
+            fail("No exception");
+        } catch (InvalidInputException e) {
+            fail("Mass exception not dateTime");
+        } catch (DateTimeException e) {
+            //pass
+        }
+    }
 
     @Test
     void getRecipeTest() {
@@ -35,8 +71,31 @@ class MealTest {
     }
 
     @Test
-    void getTimeTest() {
-        assertEquals(7, morningOatmeal.getTime());
+    void getTimeStringTest() {
+        assertEquals("07:30", morningOatmeal.getTimeString());
+    }
+
+
+    @Test
+    void getDateStringTest() {
+        try {
+            morningOatmeal = new Meal(oatmeal, 281, "2020-01-01", "07:00");
+            assertEquals("2020-01-01", morningOatmeal.getDateString());
+        } catch (InvalidInputException e) {
+            fail("Inappropriate mass exception");
+        }
+
+    }
+
+    @Test
+    void getDateTimeString() {
+        try {
+            morningOatmeal = new Meal(oatmeal, 281, "2020-01-01", "07:00");
+            assertEquals("2020-01-01T07:00", morningOatmeal.getDateTimeString());
+        } catch (InvalidInputException e) {
+            fail("Inappropriate mass exception");
+        }
+
     }
 
     @Test
@@ -54,7 +113,7 @@ class MealTest {
     @Test
     void getScaledTotalTest() {
         try {
-            Meal halfOatmeal = (new Meal(oatmeal, 140, 8));
+            Meal halfOatmeal = (new Meal(oatmeal, 140, "today", "07:00"));
             ArrayList<String> expected = new ArrayList<>();
             expected.add("Overnight Oats");
             expected.add("140");

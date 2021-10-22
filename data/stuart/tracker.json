@@ -1,31 +1,109 @@
-{"Meals": [{
-    "Recipe": {
-        "name": "Overnight Oats",
-        "portions": [
-            {
-                "Ingredient": [
-                    "Oats",
-                    "156",
-                    "519",
-                    "17",
-                    "114",
-                    "5"
-                ],
-                "mass": 156
-            },
-            {
-                "Ingredient": [
-                    "Milk",
-                    "125",
-                    "45",
-                    "5",
-                    "6",
-                    "0"
-                ],
-                "mass": 125
-            }
-        ]
+{"Meals": [
+    {
+        "date": "2021-10-21",
+        "Recipe": {
+            "name": "Overnight Oats",
+            "portions": [
+                {
+                    "Ingredient": [
+                        "Oats",
+                        "156",
+                        "519",
+                        "17",
+                        "114",
+                        "5"
+                    ],
+                    "mass": 156
+                },
+                {
+                    "Ingredient": [
+                        "Milk",
+                        "125",
+                        "45",
+                        "5",
+                        "6",
+                        "0"
+                    ],
+                    "mass": 125
+                }
+            ]
+        },
+        "mass": 281,
+        "time": "07:00"
     },
-    "mass": 281,
-    "time": 7
-}]}
+    {
+        "date": "2021-10-21",
+        "Recipe": {
+            "name": "Blueberry Milk",
+            "portions": [
+                {
+                    "Ingredient": [
+                        "Blueberry",
+                        "50",
+                        "28",
+                        "0",
+                        "7",
+                        "0"
+                    ],
+                    "mass": 50
+                },
+                {
+                    "Ingredient": [
+                        "Sugar",
+                        "25",
+                        "97",
+                        "0",
+                        "25",
+                        "0"
+                    ],
+                    "mass": 25
+                },
+                {
+                    "Ingredient": [
+                        "Milk",
+                        "175",
+                        "63",
+                        "6",
+                        "8",
+                        "0"
+                    ],
+                    "mass": 175
+                }
+            ]
+        },
+        "mass": 250,
+        "time": "15:00"
+    },
+    {
+        "date": "2021-10-22",
+        "Recipe": {
+            "name": "Overnight Oats",
+            "portions": [
+                {
+                    "Ingredient": [
+                        "Oats",
+                        "156",
+                        "519",
+                        "17",
+                        "114",
+                        "5"
+                    ],
+                    "mass": 156
+                },
+                {
+                    "Ingredient": [
+                        "Milk",
+                        "125",
+                        "45",
+                        "5",
+                        "6",
+                        "0"
+                    ],
+                    "mass": 125
+                }
+            ]
+        },
+        "mass": 100,
+        "time": "12:00"
+    }
+]}

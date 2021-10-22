@@ -52,7 +52,8 @@ public class JsonReaderMealTest {
 
             assertEquals(expected, mealList.get(0).getRecipe().getTotal().getIngredient().getFields());
             assertEquals(281, mealList.get(0).getMass());
-            assertEquals(7, mealList.get(0).getTime());
+            assertEquals("07:00", mealList.get(0).getTimeString());
+            assertEquals("2020-01-01", mealList.get(0).getDateString());
 
         } catch (IOException e) {
             fail("Couldn't read from file");
