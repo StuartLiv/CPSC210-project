@@ -1,13 +1,12 @@
 package model;
 
 import model.exceptions.InvalidInputException;
-import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
+import model.exceptions.NoRecipeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,8 +35,22 @@ class MealTest {
         try {
             morningOatmeal = new Meal(oatmeal, -5, "today", "00:00");
             fail("No exception");
-        } catch (InvalidInputException e) {
+        } catch (InvalidMassException e) {
             //pass
+        } catch (Exception e) {
+            fail("Wrong exception");
+        }
+    }
+
+    @Test
+    void invalidRecipeTest() {
+        try {
+            new Meal(null, 281, "today", "00:00");
+            fail("No exception");
+        } catch (NoRecipeException e) {
+            //pass
+        } catch (Exception e) {
+            fail("Wrong exception");
         }
     }
 

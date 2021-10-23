@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
 import model.exceptions.NoIngredientsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -86,7 +87,7 @@ public class RecipeTest {
             expected.add("5");
 
             assertEquals(expected, sum.getIngredient().getFields());
-        } catch (NoIngredientsException e) {
+        } catch (NoIngredientsException | InvalidMassException e) {
             fail("portions is uninitialized");
         }
     }

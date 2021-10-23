@@ -2,6 +2,7 @@ package ui;
 
 import model.*;
 import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
 import model.exceptions.NoIngredientsException;
 import persistence.*;
 
@@ -490,7 +491,11 @@ public class TrackerApp {
             printPortion(p);
         }
         System.out.println();
-        printPortion(recipe.getTotal());
+        try {
+            printPortion(recipe.getTotal());
+        } catch (InvalidMassException e) {
+            System.out.println("Recipe has invalid ingredients");
+        }
     }
 
     //EFFECTS: prints a portion
@@ -747,7 +752,7 @@ public class TrackerApp {
     private Portion getDayTotal(ArrayList<Portion> totalsPerDay, String date) {
         try {
             return (new Recipe(totalsPerDay, date)).getTotal();
-        } catch (NoIngredientsException e) {
+        } catch (NoIngredientsException | InvalidMassException e) {
             return null;
         }
     }

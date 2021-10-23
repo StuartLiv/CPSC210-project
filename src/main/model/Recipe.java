@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
 import model.exceptions.NoIngredientsException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -49,15 +50,11 @@ public class Recipe implements Writable {
 
 
     //EFFECTS: calculate and total nutrition statistics for a recipe
-    public Portion getTotal() {
-        try {
-            int mass = this.massTotal();
-            Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
-                    this.carbTotal(), this.fatTotal());
-            return new Portion(sum, mass);
-        } catch (InvalidInputException e) {
-            throw new RuntimeException("Invalid portion in Recipe.getTotal");
-        }
+    public Portion getTotal() throws InvalidMassException {
+        int mass = this.massTotal();
+        Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
+                this.carbTotal(), this.fatTotal());
+        return new Portion(sum, mass);
     }
 
     //EFFECTS: returns sum of the masses of all portions
