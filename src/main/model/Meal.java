@@ -2,6 +2,7 @@ package model;
 
 import model.exceptions.InvalidInputException;
 import model.exceptions.InvalidMassException;
+import model.exceptions.InvalidNutritionException;
 import model.exceptions.NoRecipeException;
 import org.json.JSONObject;
 import persistence.Writable;
@@ -79,7 +80,7 @@ public class Meal implements Writable {
     }
 
     //EFFECTS: returns nutritional total scaled to this.serving
-    private Portion getScaledTotal() {
+    private Portion getScaledTotal() throws InvalidNutritionException {
         double factor = (double) serving / recipe.massTotal();
         total.scaleIngredient(factor);
         return total;

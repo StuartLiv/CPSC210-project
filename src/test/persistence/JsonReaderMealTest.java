@@ -1,7 +1,7 @@
 package persistence;
 
 import model.Meal;
-import model.exceptions.InvalidMassException;
+import model.exceptions.InvalidInputException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -56,8 +56,21 @@ public class JsonReaderMealTest {
             assertEquals("07:00", mealList.get(0).getTimeString());
             assertEquals("2020-01-01", mealList.get(0).getDateString());
 
-        } catch (IOException | InvalidMassException e) {
+        } catch (IOException | InvalidInputException e) {
             fail("Couldn't read from file");
+        }
+    }
+
+    @Test
+    void testInvalidMealList() {
+        JsonReaderMeal reader = new JsonReaderMeal("./data/Test/invalidMealsTest.json");
+        try {
+            reader.readMeal();
+            fail("No exception thrown");
+        } catch (IOException e) {
+            fail("Couldn't read from file");
+        } catch (RuntimeException e) {
+            //pass
         }
     }
 }

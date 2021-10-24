@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Ingredient;
+import model.exceptions.InvalidNutritionException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -45,8 +46,21 @@ public class JsonReaderIngredientTest {
             expected.add(new Ingredient("Milk", 250, 90, 9, 12, 0 ));
             assertEquals(expected.get(0).getFields(), ingredientList.get(0).getFields());
             assertEquals(expected.get(1).getFields(), ingredientList.get(1).getFields());
+        } catch (IOException | InvalidNutritionException e) {
+            fail("Couldn't read from file");
+        }
+    }
+
+    @Test
+    void testReaderInvalidIngredientList() {
+        JsonReaderIngredient reader = new JsonReaderIngredient("./data/Test/invalidIngredientsTest.json");
+        try {
+            reader.readIngredient();
+            fail("Exception not triggered");
         } catch (IOException e) {
             fail("Couldn't read from file");
+        } catch (RuntimeException e) {
+            //pass
         }
     }
 }

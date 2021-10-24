@@ -1,0 +1,23 @@
+{
+  "Meals": [
+    {
+      "date": "2020-01-01-01",
+      "Recipe":
+      {
+        "name": "Overnight Oats",
+        "portions": [
+          {
+            "Ingredient": ["Oats", "-1100", "no", "11", "73", "3"],
+            "mass": -156
+          },
+          {
+            "Ingredient": ["Milk", "250", "90", "9", "12", "0"],
+            "mass": 125
+          }
+        ]
+      },
+      "mass": -281,
+      "time": "07:00"
+    }
+  ]
+}

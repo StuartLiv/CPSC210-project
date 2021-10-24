@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Ingredient;
+import model.exceptions.InvalidNutritionException;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -58,7 +59,7 @@ public class JsonWriterIngredientTest {
 
             assertEquals(ingredients.get(0).getFields(), result.get(0).getFields());
             assertEquals(ingredients.get(1).getFields(), result.get(1).getFields());
-        } catch (IOException e) {
+        } catch (IOException | InvalidNutritionException e) {
             fail("Exception should not have been thrown");
         }
     }

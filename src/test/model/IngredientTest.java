@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.InvalidNutritionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,11 @@ class IngredientTest {
 
     @BeforeEach
     void runBefore() {
-        oat = new Ingredient("Oats", 100, 333, 11, 73, 3 );
+        try {
+            oat = new Ingredient("Oats", 100, 333, 11, 73, 3 );
+        } catch (InvalidNutritionException e) {
+            fail("Invalid test ingredient");
+        }
     }
 
 
@@ -40,6 +45,28 @@ class IngredientTest {
             new Ingredient(new String[]{"Oats", "100", "333", "no", "73", "3"});
             fail("NumberFormatException not triggered");
         } catch (NumberFormatException ignore) {
+            //pass
+        } catch (InvalidNutritionException e) {
+            fail("Wrong exception");
+        }
+    }
+
+    @Test
+    void invalidNutritionException() {
+        try {
+            new Ingredient("Test", -100, 100, 100, 100, 100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidNutritionExceptionOverload() {
+        try {
+            new Ingredient(new String[]{"Oats", "-100", "333", "100", "73", "3"});
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
             //pass
         }
     }

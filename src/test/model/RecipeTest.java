@@ -31,7 +31,7 @@ public class RecipeTest {
         try {
             new Recipe(new ArrayList<>(), "Empty");
             fail("Exception not triggered");
-        } catch (NoIngredientsException e) {
+        } catch (InvalidInputException e) {
             //pass
         }
     }
@@ -42,7 +42,7 @@ public class RecipeTest {
         try {
             Recipe oatmeal = new Recipe(portions, "Overnight Oats");
             assertEquals("Overnight Oats", oatmeal.getName());
-        } catch (NoIngredientsException e) {
+        } catch (InvalidInputException e) {
             fail("portions is uninitialized");
         }
     }
@@ -54,7 +54,7 @@ public class RecipeTest {
             Recipe temp = new Recipe(portions, "Unsaved Recipe");
             assertEquals("Unsaved Recipe", temp.getName());
             assertFalse(temp.getToSave());
-        } catch (NoIngredientsException e) {
+        } catch (InvalidInputException e) {
             fail("portions is uninitialized");
         }
     }
@@ -65,7 +65,7 @@ public class RecipeTest {
         try {
             Recipe oatmeal = new Recipe(portions, "Overnight Oats");
             assertEquals(oatmeal.getIngredients(), portions);
-        } catch (NoIngredientsException e) {
+        } catch (InvalidInputException e) {
             fail("portions is uninitialized");
         }
     }
@@ -87,7 +87,7 @@ public class RecipeTest {
             expected.add("5");
 
             assertEquals(expected, sum.getIngredient().getFields());
-        } catch (NoIngredientsException | InvalidMassException e) {
+        } catch (InvalidInputException e) {
             fail("portions is uninitialized");
         }
     }

@@ -82,10 +82,14 @@ public class TrackerApp {
     //EFFECTS: initializes recipeBook, ingredientList, tracker
     // throws IOException if user is invalid
     private void loadData(String user) throws IOException {
-        source = "./data/" + user + "/";
-        ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
-        recipeBook = new JsonReaderRecipe(source + "recipeBook.json").readRecipe();
-        tracker = new JsonReaderMeal(source + "tracker.json").readMeal();
+        try {
+            source = "./data/" + user + "/";
+            ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
+            recipeBook = new JsonReaderRecipe(source + "recipeBook.json").readRecipe();
+            tracker = new JsonReaderMeal(source + "tracker.json").readMeal();
+        } catch (RuntimeException e) {
+            System.out.println("Files contain invalid data. Please manually delete these before running again");
+        }
     }
 
     //EFFECTS: stores recipeBook, ingredientList, tracker
@@ -493,7 +497,7 @@ public class TrackerApp {
         System.out.println();
         try {
             printPortion(recipe.getTotal());
-        } catch (InvalidMassException e) {
+        } catch (InvalidInputException e) {
             System.out.println("Recipe has invalid ingredients");
         }
     }
@@ -752,7 +756,7 @@ public class TrackerApp {
     private Portion getDayTotal(ArrayList<Portion> totalsPerDay, String date) {
         try {
             return (new Recipe(totalsPerDay, date)).getTotal();
-        } catch (NoIngredientsException | InvalidMassException e) {
+        } catch (InvalidInputException e) {
             return null;
         }
     }

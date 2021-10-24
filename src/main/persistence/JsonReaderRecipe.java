@@ -4,7 +4,6 @@ import model.Ingredient;
 import model.Portion;
 import model.Recipe;
 import model.exceptions.InvalidInputException;
-import ui.TrackerApp;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -70,7 +69,7 @@ public class JsonReaderRecipe extends JsonReaderIngredient {
             Ingredient ingredient = parseIngredient(jsonObject);
             int mass = (jsonObject.getInt("mass"));
             return new Portion(ingredient, mass);
-        } catch (InvalidInputException e) {
+        } catch (Exception e) {
             throw new RuntimeException("files have invalid portions");
         }
     }

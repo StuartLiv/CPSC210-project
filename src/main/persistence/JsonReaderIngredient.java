@@ -1,6 +1,7 @@
 package persistence;
 
 import model.Ingredient;
+import model.exceptions.InvalidInputException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,8 +55,12 @@ public class JsonReaderIngredient {
 
     // EFFECTS: parses ingredient from JSONObject
     protected Ingredient parseIngredient(JSONObject jsonObject) {
-        String fieldString = jsonObject.get("Ingredient").toString();
-        String[] fields = fieldString.substring(2,fieldString.length() - 2).split("\",\"");
-        return new Ingredient(fields);
+        try {
+            String fieldString = jsonObject.get("Ingredient").toString();
+            String[] fields = fieldString.substring(2, fieldString.length() - 2).split("\",\"");
+            return new Ingredient(fields);
+        } catch (Exception e) {
+            throw new RuntimeException("files contain invalid ingredients");
+        }
     }
 }

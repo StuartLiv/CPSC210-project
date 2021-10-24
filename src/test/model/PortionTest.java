@@ -1,6 +1,7 @@
 package model;
 
 import model.exceptions.InvalidMassException;
+import model.exceptions.InvalidNutritionException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,11 @@ public class PortionTest {
 
     @BeforeEach
     void runBefore() {
-        oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
+        try {
+            oat = new Ingredient(new String[]{"Oats", "100", "333", "11", "73", "3"});
+        } catch (InvalidNutritionException e) {
+            fail("Invalid test ingredient");
+        }
     }
 
     @Test
@@ -33,7 +38,7 @@ public class PortionTest {
 
             assertEquals(OatsScaled.getMass(), OatsScaled.getIngredient().getServingSize());
             assertEquals(expected, OatsScaled.getIngredient().getFields());
-        } catch (InvalidMassException e) {
+        } catch (InvalidMassException | InvalidNutritionException e) {
             fail("Invalid Ingredient");
         }
     }
@@ -54,7 +59,7 @@ public class PortionTest {
 
             assertEquals(33, OatsScaled.getIngredient().getServingSize());
             assertEquals(expected, OatsScaled.getIngredient().getFields());
-        } catch (InvalidMassException e) {
+        } catch (InvalidMassException | InvalidNutritionException e) {
             fail("Invalid Ingredient");
         }
     }

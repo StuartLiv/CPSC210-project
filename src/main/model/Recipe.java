@@ -2,6 +2,7 @@ package model;
 
 import model.exceptions.InvalidInputException;
 import model.exceptions.InvalidMassException;
+import model.exceptions.InvalidNutritionException;
 import model.exceptions.NoIngredientsException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public class Recipe implements Writable {
     //MODIFIES: this
     //EFFECTS: Initialize name, and scale ingredient serving sizes
     // throws NoIngredientsException if ingredients is empty
-    public Recipe(ArrayList<Portion> ingredients, String name) throws NoIngredientsException {
+    public Recipe(ArrayList<Portion> ingredients, String name) throws InvalidInputException {
         if (Objects.equals(ingredients, new ArrayList<Portion>())) {
             throw new NoIngredientsException();
         }
@@ -50,7 +51,7 @@ public class Recipe implements Writable {
 
 
     //EFFECTS: calculate and total nutrition statistics for a recipe
-    public Portion getTotal() throws InvalidMassException {
+    public Portion getTotal() throws InvalidInputException {
         int mass = this.massTotal();
         Ingredient sum = new Ingredient(this.recipeName, mass, this.calTotal(), this.proteinTotal(),
                 this.carbTotal(), this.fatTotal());

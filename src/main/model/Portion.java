@@ -2,6 +2,7 @@ package model;
 
 import model.exceptions.InvalidMassException;
 
+import model.exceptions.InvalidNutritionException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -45,7 +46,7 @@ public class Portion implements Writable {
 
     //MODIFIES: this.ingredient
     //EFFECTS: scales ingredient to make servingSize = this.mass
-    public void scaleIngredient() {
+    public void scaleIngredient() throws InvalidNutritionException {
         ingredient = new Ingredient(ingredient.getIngredientName(), mass,
                 convert(ingredient.getCalories(), factor), convert(ingredient.getProtein(), factor),
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));
@@ -53,7 +54,7 @@ public class Portion implements Writable {
 
     //MODIFIES: this.ingredient
     //EFFECTS: scales ingredient to provided factor
-    public void scaleIngredient(double factor) {
+    public void scaleIngredient(double factor) throws InvalidNutritionException {
         ingredient = new Ingredient(ingredient.getIngredientName(), convert(ingredient.getServingSize(), factor),
                 convert(ingredient.getCalories(), factor), convert(ingredient.getProtein(), factor),
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));

@@ -1,5 +1,6 @@
 package model;
 
+import model.exceptions.InvalidNutritionException;
 import org.json.JSONObject;
 import persistence.Writable;
 
@@ -16,25 +17,32 @@ public class Ingredient implements Writable {
     
     //MODIFIES: this
     //EFFECTS: All parameters are assigned to field of the same name
-    public Ingredient(String ingredientName, int mass, int calories, int protein, int carbs, int fat) {
+    public Ingredient(String ingredientName, int mass, int calories, int protein, int carbs, int fat)
+            throws InvalidNutritionException {
         this.ingredientName = ingredientName;
         this.servingSize = mass;
         this.calories = calories;
         this.protein = protein;
         this.carbs = carbs;
         this.fat = fat;
+        if (this.servingSize < 0 || this.calories < 0 || this.protein < 0 || this.carbs < 0 || this.fat < 0) {
+            throw new InvalidNutritionException();
+        }
     }
 
     //MODIFIES: this
     //EFFECTS: All parameters are assigned to field of the same name,
     // throws NumberFormatException if any of parameter[1:5] are not string casted integers
-    public Ingredient(String[] parameters) throws NumberFormatException {
+    public Ingredient(String[] parameters) throws NumberFormatException, InvalidNutritionException {
         this.ingredientName = parameters[0];
         this.servingSize = Integer.parseInt(parameters[1]);
         this.calories = Integer.parseInt(parameters[2]);
         this.protein = Integer.parseInt(parameters[3]);
         this.carbs = Integer.parseInt(parameters[4]);
         this.fat = Integer.parseInt(parameters[5]);
+        if (this.servingSize < 0 || this.calories < 0 || this.protein < 0 || this.carbs < 0 || this.fat < 0) {
+            throw new InvalidNutritionException();
+        }
     }
 
     //Field Getters
