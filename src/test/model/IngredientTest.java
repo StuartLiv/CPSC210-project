@@ -54,7 +54,7 @@ class IngredientTest {
     @Test
     void invalidNutritionException() {
         try {
-            new Ingredient("Test", -100, 100, 100, 100, 100);
+            new Ingredient("Test", -100, -100, -100, -100, -100);
             fail("Exception not thrown");
         } catch (InvalidNutritionException e) {
             //pass
@@ -64,7 +64,7 @@ class IngredientTest {
     @Test
     void invalidNutritionExceptionOverload() {
         try {
-            new Ingredient(new String[]{"Oats", "-100", "333", "100", "73", "3"});
+            new Ingredient(new String[]{"Oats", "-100", "-333", "-100", "-73", "-3"});
             fail("Exception not thrown");
         } catch (InvalidNutritionException e) {
             //pass
