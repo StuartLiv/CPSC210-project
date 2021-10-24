@@ -52,9 +52,15 @@ class IngredientTest {
     }
 
     @Test
-    void invalidNutritionException() {
+    void invalidServingSizeException() {
         try {
-            new Ingredient("Test", -100, -100, -100, -100, -100);
+            new Ingredient("Test", -100, 100, 100, 100, 100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+        try {
+            new Ingredient(new String[]{"Test", "-100", "100", "100", "100", "100"});
             fail("Exception not thrown");
         } catch (InvalidNutritionException e) {
             //pass
@@ -62,9 +68,63 @@ class IngredientTest {
     }
 
     @Test
-    void invalidNutritionExceptionOverload() {
+    void invalidCaloriesException() {
         try {
-            new Ingredient(new String[]{"Oats", "-100", "-333", "-100", "-73", "-3"});
+            new Ingredient("Test", 100, -100, 100, 100, 100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+        try {
+            new Ingredient(new String[]{"Test", "100", "-100", "100", "100", "100"});
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidProteinException() {
+        try {
+            new Ingredient("Test", 100, 100, -100, 100, 100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+        try {
+            new Ingredient(new String[]{"Test", "100", "100", "-100", "100", "100"});
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidCarbsException() {
+        try {
+            new Ingredient("Test", 100, 100, 100, -100, 100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+        try {
+            new Ingredient(new String[]{"Test", "100", "100", "100", "-100", "100"});
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+    }
+
+    @Test
+    void invalidFatException() {
+        try {
+            new Ingredient("Test", 100, 100, 100, 100, -100);
+            fail("Exception not thrown");
+        } catch (InvalidNutritionException e) {
+            //pass
+        }
+        try {
+            new Ingredient(new String[]{"Test", "100", "100", "100", "100", "-100"});
             fail("Exception not thrown");
         } catch (InvalidNutritionException e) {
             //pass
