@@ -4,7 +4,6 @@ import model.*;
 import model.exceptions.InvalidInputException;
 import persistence.*;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
