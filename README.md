@@ -37,3 +37,6 @@ nutritional goals easier.
 - As a user, I want to select a profile with user history to load
 - As a user, I want to save my application state
 - As a user, I want to be reminded to save the application state when I exit the program
+
+### Phase Three User Stories
+- As a user, I want to see summary graphs of my nutrition
