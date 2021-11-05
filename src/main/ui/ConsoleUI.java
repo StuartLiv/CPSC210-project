@@ -8,6 +8,7 @@ import persistence.JsonWriterRecipe;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 //Console UI for TrackerApp
@@ -46,7 +47,7 @@ public class ConsoleUI {
             } else {
                 processCommand(command);
             }
-            profile.maintainSorted();
+            maintainSorted();
         }
 
         System.out.println("Would you like to save the application?");
@@ -155,6 +156,16 @@ public class ConsoleUI {
             selection = selection.toLowerCase();
         }
         return selection.equals("y");
+    }
+
+    //MODIFIES: this
+    //EFFECTS: keeps data field lists in sorted order
+    //Using object comparison from oracle docs:
+    //Link: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparing-java.util.function.Function-
+    public void maintainSorted() {
+        profile.getIngredientList().sort(Comparator.comparing(Ingredient::getIngredientName));
+        profile.getRecipeBook().sort((Comparator.comparing(Recipe::getName)));
+        profile.getTracker().sort((Comparator.comparing(Meal::getDateTimeString)));
     }
 
     //MODIFIES: this
@@ -639,7 +650,7 @@ public class ConsoleUI {
     private void doStats() {
         System.out.println("Total Daily Nutrition\n");
         System.out.println("Date \t\t\tServing \tCalories\tProtein \tCarbs \tFat");
-        ArrayList<Portion> dailyTotals = profile.getFormattedTotals();
+        ArrayList<Portion> dailyTotals = getFormattedTotals();
         if (dailyTotals.isEmpty()) {
             System.out.println("No meals to show statistics on");
             return;
@@ -647,6 +658,58 @@ public class ConsoleUI {
         for (Portion p : dailyTotals) {
             printIngredient(p.getIngredient());
             System.out.println();
+        }
+    }
+
+    //EFFECTS: returns formatted daily nutrition totals
+    public ArrayList<Portion> getFormattedTotals() {
+        return formatTotals(getDailyTotals());
+    }
+
+    //EFFECTS: removes duplicates and null portions from dailyTotals
+    private ArrayList<Portion> formatTotals(ArrayList<Portion> dailyTotals) {
+        ArrayList<Portion> formattedTotals = new ArrayList<>();
+        boolean notInFormattedTools;
+        for (Portion total : dailyTotals) {
+            if (total != null) {
+                notInFormattedTools = true;
+                for (Portion p : formattedTotals) {
+                    notInFormattedTools = notInFormattedTools
+                            && !total.getIngredient().getIngredientName().equals(p.getIngredient().getIngredientName());
+                }
+                if (notInFormattedTools) {
+                    formattedTotals.add(total);
+                }
+            }
+        }
+        return formattedTotals;
+    }
+
+    //EFFECTS: returns daily totals of each day in tracker
+    //NOTE: list contains duplicates, and null portions
+    private ArrayList<Portion> getDailyTotals() {
+        ArrayList<Portion> totalsPerDay = new ArrayList<>();
+        ArrayList<Portion> dailyTotal = new ArrayList<>();
+        String date;
+        for (Meal meal : profile.getTracker()) {
+            date = meal.getDateString();
+            for (Meal m : profile.getTracker()) {
+                if (m.getDateString().equals(date)) {
+                    totalsPerDay.add(m.getTotal());
+                }
+            }
+            dailyTotal.add(getDayTotal(totalsPerDay, date));
+            totalsPerDay.clear();
+        }
+        return dailyTotal;
+    }
+
+    //EFFECTS: returns single day total from given meal totals that day
+    private Portion getDayTotal(ArrayList<Portion> totalsPerDay, String date) {
+        try {
+            return (new Recipe(totalsPerDay, date)).getTotal();
+        } catch (InvalidInputException e) {
+            return null;
         }
     }
 
