@@ -18,7 +18,7 @@ public class ProfileTest {
     @BeforeEach
     void runBefore() {
         try {
-            profile = new Profile("./data/Demo/");
+            profile = new Profile("./data/demo/");
             portions.add(new Portion(
                     new Ingredient("Oats", 100, 333, 11, 73, 3), 156));
             portions.add(new Portion(
