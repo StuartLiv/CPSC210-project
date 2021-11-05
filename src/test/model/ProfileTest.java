@@ -34,8 +34,10 @@ public class ProfileTest {
             assertEquals(0, profile.getIngredientList().size());
             profile.addIngredient(new Ingredient("Test", 100, 100, 100, 100, 100));
             assertEquals("Test", profile.findIngredient("Test").getIngredientName());
-            profile.deleteIngredient("Test");
-            assertEquals(0, profile.getIngredientList().size());
+            assertNull(profile.findIngredient("Invalid"));
+            profile.addIngredient(new Ingredient("Test2", 100, 100, 100, 100, 100));
+            profile.deleteIngredient("Test2");
+            assertEquals(1, profile.getIngredientList().size());
         } catch (InvalidNutritionException e) {
             fail();
         }
@@ -47,8 +49,10 @@ public class ProfileTest {
             assertEquals(0, profile.getRecipeBook().size());
             profile.addRecipe(new Recipe(portions, "Overnight Oats"));
             assertEquals("Overnight Oats", profile.findRecipe("Overnight Oats").getName());
-            profile.deleteRecipe("Overnight Oats");
-            assertEquals(0, profile.getRecipeBook().size());
+            assertNull(profile.findRecipe("Invalid"));
+            profile.addRecipe(new Recipe(portions, "Oatmeal"));
+            profile.deleteRecipe("Oatmeal");
+            assertEquals(1, profile.getRecipeBook().size());
         } catch (InvalidInputException e) {
             fail();
         }

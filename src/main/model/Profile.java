@@ -1,6 +1,5 @@
 package model;
 
-import model.exceptions.InvalidInputException;
 import persistence.*;
 
 import java.io.IOException;
