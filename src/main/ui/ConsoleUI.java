@@ -20,22 +20,24 @@ import java.util.Scanner;
 
 //ConsoleUI, runConsoleUI, processCommand, displayMenu, getAction modeled after the sample project TellerApp
 //Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
-public class ConsoleUI {
+public class ConsoleUI  extends AbstractUI {
     private Scanner input;
-    private boolean keepGoing = true;
+    private boolean keepGoing;
     private String source;
     private Profile profile;
 
     //EFFECTS: runs the tracker application
     public ConsoleUI() {
-        runConsoleUI();
+        super();
     }
 
     //MODIFIES: this
     //EFFECTS: processes user input
-    private void runConsoleUI() {
+    @Override
+    protected void runUI() {
         String command;
         init();
+        keepGoing = true;
 
         while (keepGoing) {
             displayMenu();
