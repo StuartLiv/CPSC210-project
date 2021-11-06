@@ -2,29 +2,22 @@ package ui;
 
 import model.*;
 import model.exceptions.InvalidInputException;
-import persistence.JsonWriterIngredient;
-import persistence.JsonWriterMeal;
-import persistence.JsonWriterRecipe;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Scanner;
 
 //Console UI for TrackerApp
 
 //TODO: refactor trackerApp into a console ui, and a trackerApp class with no output, maybe move to model
 //Refactoring solutions: make trackerApp a data handling class, make new console ui class to move these methods to //
-//Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same
+//Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same /
 //then later add gui class, a lot of functionality stays preserved, code can be inactive, not deleted
 
 //ConsoleUI, runConsoleUI, processCommand, displayMenu, getAction modeled after the sample project TellerApp
 //Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class ConsoleUI  extends AbstractUI {
     private Scanner input;
-    private boolean keepGoing;
-    private String source;
-    private Profile profile;
 
     //EFFECTS: runs the tracker application
     public ConsoleUI() {
@@ -32,36 +25,8 @@ public class ConsoleUI  extends AbstractUI {
     }
 
     //MODIFIES: this
-    //EFFECTS: processes user input
-    @Override
-    protected void runUI() {
-        String command;
-        init();
-        keepGoing = true;
-
-        while (keepGoing) {
-            displayMenu();
-            command = input.next();
-            command = command.toLowerCase();
-
-            if (command.equals("q")) {
-                keepGoing = false;
-            } else {
-                processCommand(command);
-            }
-            maintainSorted();
-        }
-
-        System.out.println("Would you like to save the application?");
-        if (getYesNo()) {
-            saveData();
-        }
-        System.out.println("\nGoodbye!");
-    }
-
-    //MODIFIES: this
     //EFFECTS: initializes account
-    private void init() {
+    protected void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         source = "./data/" + chooseProfile() + "/";
@@ -79,30 +44,27 @@ public class ConsoleUI  extends AbstractUI {
         return input.next().toLowerCase();
     }
 
-    //EFFECTS: stores recipeBook, ingredientList, tracker
-    private void saveData() {
-        try {
-            JsonWriterIngredient writerIngredient = new JsonWriterIngredient(source + "ingredients.json");
-            writerIngredient.open();
-            writerIngredient.writeIngredients(profile.getIngredientList());
-            writerIngredient.close();
+    //EFFECTS: returns selected menu option
+    protected String getCommand() {
+        return input.next().toLowerCase();
+    }
 
-            JsonWriterRecipe writerRecipe = new JsonWriterRecipe(source + "recipeBook.json");
-            writerRecipe.open();
-            writerRecipe.writeRecipes(profile.getRecipeBook());
-            writerRecipe.close();
-
-            JsonWriterMeal writerMeal = new JsonWriterMeal(source + "tracker.json");
-            writerMeal.open();
-            writerMeal.writeMeals(profile.getTracker());
-            writerMeal.close();
-        } catch (IOException e) {
-            System.out.println("Unexpected file name error, data could not be saved");
+    @Override
+    //EFFECTS: stores data, if user chooses
+    protected void saveState() {
+        System.out.println("Would you like to save the application?");
+        if (getYesNo()) {
+            try {
+                saveData();
+            } catch (IOException e) {
+                System.out.println("Unexpected file name error, data could not be saved");
+            }
         }
+        System.out.println("\nGoodbye!");
     }
 
     //EFFECTS: displays menu of options to user
-    private void displayMenu() {
+    protected void showMenu() {
         System.out.println("\nSelect from:");
         System.out.println("\ti -> ingredients");
         System.out.println("\tr -> recipes");
@@ -111,31 +73,8 @@ public class ConsoleUI  extends AbstractUI {
         System.out.println("\tq -> quit");
     }
 
-    //MODIFIES: this
-    //EFFECTS: processes user command
-    private void processCommand(String command) {
-        switch (command) {
-            case "i":
-                doIngredient(getAction());
-                break;
-            case "r":
-                doRecipe(getAction());
-                break;
-            case "m":
-                doMeal(getAction());
-                break;
-            case "s":
-                doStats();
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
-    }
-
     //EFFECTS: returns action from add, edit, remove, see
-    //NOTE: edit and remove will be implemented in phase 2 data persistence
-    private String getAction() {
+    protected String getAction() {
         String selection = "";
         System.out.println("\nWhat would you like to do?");
         while (!(selection.equals("a") || selection.equals("e") || selection.equals("r") || selection.equals("s"))) {
@@ -161,40 +100,8 @@ public class ConsoleUI  extends AbstractUI {
     }
 
     //MODIFIES: this
-    //EFFECTS: keeps data field lists in sorted order
-    //Using object comparison from oracle docs:
-    //Link: https://docs.oracle.com/javase/8/docs/api/java/util/Comparator.html#comparing-java.util.function.Function-
-    public void maintainSorted() {
-        profile.getIngredientList().sort(Comparator.comparing(Ingredient::getIngredientName));
-        profile.getRecipeBook().sort((Comparator.comparing(Recipe::getName)));
-        profile.getTracker().sort((Comparator.comparing(Meal::getDateTimeString)));
-    }
-
-    //MODIFIES: this
-    //EFFECTS: add, read, edit, remove ingredients
-    private void doIngredient(String action) {
-        switch (action) {
-            case "a":
-                addIngredients();
-                break;
-            case "e":
-                editIngredient();
-                break;
-            case "r":
-                removeIngredient();
-                break;
-            case "s":
-                seeIngredients();
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
-    }
-
-    //MODIFIES: this
     //EFFECTS: looping function for addIngredient: adds some number of ingredients to the list
-    private void addIngredients() {
+    protected void addIngredients() {
         boolean repeat = true;
         while (repeat) {
             try {
@@ -222,7 +129,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: replaces selected ingredient with new declaration
-    private void editIngredient() {
+    protected void editIngredient() {
         System.out.println("Enter the name of the ingredient to edit:");
         String name = input.next();
         Ingredient toEdit = profile.findIngredient(name);
@@ -245,7 +152,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: removes selected ingredient from ingredientList
-    private void removeIngredient() {
+    protected void removeIngredient() {
         System.out.println("Enter the name of the ingredient to delete:");
         String name = input.next();
         Ingredient toDelete = profile.findIngredient(name);
@@ -264,7 +171,7 @@ public class ConsoleUI  extends AbstractUI {
     }
 
     //EFFECTS: prints ingredientList
-    private void seeIngredients() {
+    protected void showIngredients() {
         System.out.println("These are the current known ingredients (units in grams): \nName \t\t\tServing \tCalories"
                 + "\tProtein \tCarbs \tFat");
         for (Ingredient ingredient: profile.getIngredientList()) {
@@ -294,33 +201,9 @@ public class ConsoleUI  extends AbstractUI {
         }
     }
 
-
-
-    //MODIFIES: this
-    //EFFECTS: add, read, edit, remove ingredients
-    private void doRecipe(String action) {
-        switch (action) {
-            case "a":
-                addRecipes();
-                break;
-            case "e":
-                editRecipe();
-                break;
-            case "r":
-                removeRecipe();
-                break;
-            case "s":
-                seeRecipes();
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
-    }
-
     //MODIFIES: this
     //EFFECTS: looping function for addRecipe: adds some number of recipes to the list
-    private void addRecipes() {
+    protected void addRecipes() {
         boolean repeat = true;
         while (repeat) {
             try {
@@ -394,7 +277,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: replaces selected recipe with new declaration
-    private void editRecipe() {
+    protected void editRecipe() {
         System.out.println("Enter the name of the recipe to edit:");
         String name = input.next();
         Recipe toEdit = profile.findRecipe(name);
@@ -415,7 +298,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: removes selected recipe from recipeBook
-    private void removeRecipe() {
+    protected void removeRecipe() {
         System.out.println("Enter the name of the recipe to delete:");
         String name = input.next();
         Recipe toDelete = profile.findRecipe(name);
@@ -433,9 +316,8 @@ public class ConsoleUI  extends AbstractUI {
         profile.deleteRecipe(name);
     }
 
-
     //EFFECTS: prints recipeBook
-    private void seeRecipes() {
+    protected void showRecipes() {
         System.out.println("These are your stored recipes:\n");
         for (Recipe r: profile.getRecipeBook()) {
             System.out.println(r.getName() + ":");
@@ -464,34 +346,9 @@ public class ConsoleUI  extends AbstractUI {
         System.out.println("\t\t" + portion.getMass());
     }
 
-
-
-    //MODIFIES: this
-    //EFFECTS: adds, edits, removes and renders meals
-    private void doMeal(String action) {
-        switch (action) {
-            case "a":
-                addMeals();
-                break;
-            case "e":
-                editMeal();
-                break;
-            case "r":
-                removeMeal();
-                break;
-            case "s":
-                System.out.println("These are your stored meals:\n");
-                seeMeals(profile.getTracker(), "", false);
-                break;
-            default:
-                System.out.println("Selection not valid...");
-                break;
-        }
-    }
-
     //MODIFIES: this
     //EFFECTS: looping function for addMeal: adds a certain amount of meals
-    private void addMeals() {
+    protected void addMeals() {
         boolean repeat = true;
         while (repeat) {
             try {
@@ -570,7 +427,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: edits selected meal in tracker
-    private void editMeal() {
+    protected void editMeal() {
         try {
             Meal toEdit = selectMeal("edit");
             if (toEdit == null) {
@@ -588,7 +445,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: removes selected meal in tracker
-    private void removeMeal() {
+    protected void removeMeal() {
         try {
             Meal toDelete = selectMeal("remove");
             if (toDelete == null) {
@@ -625,6 +482,12 @@ public class ConsoleUI  extends AbstractUI {
         return mealsOnDate.get(input.nextInt() - 1);
     }
 
+    //EFFECTS: prints meals
+    protected void showMeals() {
+        System.out.println("These are your stored meals:\n");
+        seeMeals(profile.getTracker(), "", false);
+    }
+
     //EFFECTS: renders tracker
     private void seeMeals(ArrayList<Meal> mealList, String lineEnd, boolean printIndex) {
         System.out.println("Name \t\t\tServing \tCalories\tProtein \tCarbs \tFat\t\tMeal Mass\tDate\t\tMeal Time \t\t"
@@ -646,10 +509,8 @@ public class ConsoleUI  extends AbstractUI {
 
     }
 
-
-
     //EFFECTS: prints summary and daily nutritional info
-    private void doStats() {
+    protected void doStats() {
         System.out.println("Total Daily Nutrition\n");
         System.out.println("Date \t\t\tServing \tCalories\tProtein \tCarbs \tFat");
         ArrayList<Portion> dailyTotals = getFormattedTotals();
@@ -662,60 +523,4 @@ public class ConsoleUI  extends AbstractUI {
             System.out.println();
         }
     }
-
-    //EFFECTS: returns formatted daily nutrition totals
-    public ArrayList<Portion> getFormattedTotals() {
-        return formatTotals(getDailyTotals());
-    }
-
-    //EFFECTS: removes duplicates and null portions from dailyTotals
-    private ArrayList<Portion> formatTotals(ArrayList<Portion> dailyTotals) {
-        ArrayList<Portion> formattedTotals = new ArrayList<>();
-        boolean notInFormattedTools;
-        for (Portion total : dailyTotals) {
-            if (total != null) {
-                notInFormattedTools = true;
-                for (Portion p : formattedTotals) {
-                    notInFormattedTools = notInFormattedTools
-                            && !total.getIngredient().getIngredientName().equals(p.getIngredient().getIngredientName());
-                }
-                if (notInFormattedTools) {
-                    formattedTotals.add(total);
-                }
-            }
-        }
-        return formattedTotals;
-    }
-
-    //EFFECTS: returns daily totals of each day in tracker
-    //NOTE: list contains duplicates, and null portions
-    private ArrayList<Portion> getDailyTotals() {
-        ArrayList<Portion> totalsPerDay = new ArrayList<>();
-        ArrayList<Portion> dailyTotal = new ArrayList<>();
-        String date;
-        for (Meal meal : profile.getTracker()) {
-            date = meal.getDateString();
-            for (Meal m : profile.getTracker()) {
-                if (m.getDateString().equals(date)) {
-                    totalsPerDay.add(m.getTotal());
-                }
-            }
-            dailyTotal.add(getDayTotal(totalsPerDay, date));
-            totalsPerDay.clear();
-        }
-        return dailyTotal;
-    }
-
-    //EFFECTS: returns single day total from given meal totals that day
-    private Portion getDayTotal(ArrayList<Portion> totalsPerDay, String date) {
-        try {
-            return (new Recipe(totalsPerDay, date)).getTotal();
-        } catch (InvalidInputException e) {
-            return null;
-        }
-    }
-
-
-
-
 }

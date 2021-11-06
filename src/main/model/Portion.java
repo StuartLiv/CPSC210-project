@@ -58,7 +58,7 @@ public class Portion implements Writable {
         ingredient = new Ingredient(ingredient.getIngredientName(), convert(ingredient.getServingSize(), factor),
                 convert(ingredient.getCalories(), factor), convert(ingredient.getProtein(), factor),
                 convert(ingredient.getCarbs(), factor), convert(ingredient.getFat(), factor));
-        mass = convert(ingredient.getServingSize(), factor);
+        mass = ingredient.getServingSize();
     }
 
     //EFFECTS: returns portion as formatted JSONObject
