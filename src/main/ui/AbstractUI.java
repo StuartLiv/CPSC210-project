@@ -10,6 +10,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+//Abstract ui class, to decrease coupling in ConsoleUi and GraphicalUI
+
+//AbstractUI, runUI, processCommand modeled after the sample project TellerApp
+//Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public abstract class AbstractUI {
     protected Profile profile;
     protected String source;

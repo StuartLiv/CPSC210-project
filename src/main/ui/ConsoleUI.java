@@ -14,7 +14,7 @@ import java.util.Scanner;
 //Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same /
 //then later add gui class, a lot of functionality stays preserved, code can be inactive, not deleted
 
-//ConsoleUI, runConsoleUI, processCommand, displayMenu, getAction modeled after the sample project TellerApp
+//ConsoleUI, showMenu, getAction modeled after the sample project TellerApp
 //Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class ConsoleUI  extends AbstractUI {
     private Scanner input;

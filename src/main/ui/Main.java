@@ -2,6 +2,11 @@ package ui;
 
 public class Main {
     public static void main(String[] args) {
-        new ConsoleUI();
+        boolean useGUI = false;
+        if (useGUI) {
+            new GraphicalUI();
+        } else {
+            new ConsoleUI();
+        }
     }
 }
