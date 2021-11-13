@@ -39,7 +39,7 @@ public class GraphicalUI extends AbstractUI {
 
     protected String chooseProfile() {
         return "stuart";
-        //TODO
+        
     }
 
     protected void saveState() {
