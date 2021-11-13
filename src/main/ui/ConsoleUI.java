@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 //TODO: refactor trackerApp into a console ui, and a trackerApp class with no output, maybe move to model
 //Refactoring solutions: make trackerApp a data handling class, make new console ui class to move these methods to //
-//Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same /
+//Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same//
 //then later add gui class, a lot of functionality stays preserved, code can be inactive, not deleted
 
 //ConsoleUI, showMenu, getAction modeled after the sample project TellerApp
@@ -39,7 +39,7 @@ public class ConsoleUI  extends AbstractUI {
     }
 
     //EFFECTS: returns string name of selected user profile
-    private String chooseProfile() {
+    protected String chooseProfile() {
         System.out.println("What user profile would you like to load?");
         return input.next().toLowerCase();
     }
@@ -63,6 +63,19 @@ public class ConsoleUI  extends AbstractUI {
         System.out.println("\nGoodbye!");
     }
 
+    //EFFECTS: shows menu, gets command and handles command
+    protected void doCommand() {
+        showMenu();
+        String command = getCommand();
+
+        if (command.equals("q")) {
+            super.keepGoing = false;
+        } else {
+            processCommand(command);
+        }
+    }
+
+
     //EFFECTS: displays menu of options to user
     protected void showMenu() {
         System.out.println("\nSelect from:");
@@ -77,11 +90,11 @@ public class ConsoleUI  extends AbstractUI {
     protected String getAction() {
         String selection = "";
         System.out.println("\nWhat would you like to do?");
-        while (!(selection.equals("a") || selection.equals("e") || selection.equals("r") || selection.equals("s"))) {
+        while (!(selection.equals("a") || selection.equals("e") || selection.equals("d") || selection.equals("p"))) {
             System.out.println("\ta -> add");
             System.out.println("\te -> edit");
-            System.out.println("\tr -> remove");
-            System.out.println("\ts -> see");
+            System.out.println("\td -> delete");
+            System.out.println("\tp -> print");
             selection = input.next();
             selection = selection.toLowerCase();
         }

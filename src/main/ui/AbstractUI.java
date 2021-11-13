@@ -17,6 +17,7 @@ import java.util.Comparator;
 public abstract class AbstractUI {
     protected Profile profile;
     protected String source;
+    protected boolean keepGoing;
 
     //EFFECTS: runs UI
     public AbstractUI() {
@@ -26,19 +27,11 @@ public abstract class AbstractUI {
     //MODIFIES: this
     //EFFECTS: runs the ui, and program
     private void runUI() {
-        String command;
         init();
-        boolean keepGoing = true;
+        keepGoing = true;
 
         while (keepGoing) {
-            showMenu();
-            command = getCommand();
-
-            if (command.equals("q")) {
-                keepGoing = false;
-            } else {
-                processCommand(command);
-            }
+            doCommand();
             maintainSorted();
         }
         saveState();
@@ -48,14 +41,13 @@ public abstract class AbstractUI {
     //EFFECTS: initializes account
     protected abstract void init();
 
+    protected abstract String chooseProfile();
+
     //EFFECTS: saves user state if user chooses to
     protected abstract void saveState();
 
-    //EFFECTS: displays menu of options to user
-    protected abstract void showMenu();
-
-    //EFFECTS: returns selected menu option
-    protected abstract String getCommand();
+    //EFFECTS: selects and does user command
+    protected abstract void doCommand();
 
     //MODIFIES: this
     //EFFECTS: keeps data field lists in sorted order
@@ -117,10 +109,10 @@ public abstract class AbstractUI {
             case "e":
                 editIngredient();
                 break;
-            case "r":
+            case "d":
                 removeIngredient();
                 break;
-            case "s":
+            case "p":
                 showIngredients();
                 break;
         }
@@ -152,10 +144,10 @@ public abstract class AbstractUI {
             case "e":
                 editRecipe();
                 break;
-            case "r":
+            case "d":
                 removeRecipe();
                 break;
-            case "s":
+            case "p":
                 showRecipes();
                 break;
         }
@@ -187,10 +179,10 @@ public abstract class AbstractUI {
             case "e":
                 editMeal();
                 break;
-            case "r":
+            case "d":
                 removeMeal();
                 break;
-            case "s":
+            case "p":
                 showMeals();
                 break;
         }
