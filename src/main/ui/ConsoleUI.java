@@ -69,7 +69,7 @@ public class ConsoleUI  extends AbstractUI {
         String command = getCommand();
 
         if (command.equals("q")) {
-            super.keepGoing = false;
+            setKeepGoingFalse();
         } else {
             processCommand(command);
         }

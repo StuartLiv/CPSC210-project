@@ -37,6 +37,12 @@ public abstract class AbstractUI {
         saveState();
     }
 
+    //MODIFIES: keepGoing
+    //EFFECTS: sets keepGoing to false
+    public void setKeepGoingFalse() {
+        this.keepGoing = false;
+    }
+
     //MODIFIES: this
     //EFFECTS: initializes account
     protected abstract void init();
