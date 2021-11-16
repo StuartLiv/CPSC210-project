@@ -4,6 +4,8 @@ import model.Profile;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Locale;
@@ -36,12 +38,18 @@ public class GraphicalUI extends AbstractUI {
         frame.setSize(1280, 720);
         frame.setLocationRelativeTo(null);
         panel = new JPanel(new CardLayout());
+        //panel.add(new JLabel(""));
         frame.setVisible(true);
     }
 
     //EFFECTS: uses pop up to get file source
     protected String chooseProfile() {
         return JOptionPane.showInputDialog("What user profile would you like to load?");
+    }
+
+    //EFFECTS: returns profile
+    public Profile getProfile() {
+        return profile;
     }
 
     //EFFECTS: saves data based on yes/no pop up
@@ -54,7 +62,6 @@ public class GraphicalUI extends AbstractUI {
                 System.out.println("Unexpected file name error, data could not be saved");
             }
         }
-
     }
 
     //EFFECTS: shows command window, and sets up button listeners
@@ -66,7 +73,7 @@ public class GraphicalUI extends AbstractUI {
         commandPanel.add(new JLabel("Select what you would like to do:", JLabel.CENTER));
         String[] b = new String[]{"Ingredients", "Recipes", "Meals", "Statistics", "Quit"};
         for (int i = 0; i < buttons.length; i++) {
-            buttons[i] = new JButton(new ButtonAction(b[i], this));
+            buttons[i] = new JButton(new MenuButtonAction(b[i], this));
             buttons[i].setSize(80, 200);
             commandPanel.add(buttons[i]);
         }
@@ -97,12 +104,21 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: addIngredients entered by user as JTextFields
     protected void addIngredients() {
-
-        JPanel addIngredientPanel = new JPanel(new GridLayout());
-
+        JPanel addIngredientPanel = new JPanel(new GridLayout(4,1));
         JLabel label = new JLabel("Enter ingredients in the tab separated form: \nName \t\t\tServing \tCalories "
                 + "\tProtein \tCarbs \tFat", JLabel.CENTER);
-        addIngredientPanel.add(label, Component.BOTTOM_ALIGNMENT);
+        addIngredientPanel.add(label, Component.TOP_ALIGNMENT);
+        JTextField inputField = new JTextField("Hi", 25);
+        inputField.setEnabled(true);
+        inputField.setEditable(true);
+        inputField.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent evt) {
+                String input = ((JTextField) evt.getSource()).getText() + String.valueOf(evt.getKeyChar());
+            }
+        });
+        //inputField.addActionListener(this);
+
+        addIngredientPanel.add(inputField);
 
         panel.removeAll();
         panel.repaint();

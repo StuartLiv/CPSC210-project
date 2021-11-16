@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.Locale;
 
-public class ButtonAction extends AbstractAction {
+public class MenuButtonAction extends AbstractAction {
     String buttonName;
     GraphicalUI ui;
 
-    ButtonAction(String buttonName, GraphicalUI ui) {
+    MenuButtonAction(String buttonName, GraphicalUI ui) {
         super(buttonName);
         this.buttonName = buttonName;
         this.ui = ui;
