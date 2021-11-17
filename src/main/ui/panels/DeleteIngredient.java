@@ -1,4 +1,10 @@
 package ui.panels;
 
-public class DeleteIngredient {
+import javax.swing.*;
+
+public class DeleteIngredient extends JPanel {
+
+    public DeleteIngredient() {
+
+    }
 }

@@ -21,7 +21,7 @@ public abstract class AbstractUI {
 
     //EFFECTS: runs UI
     public AbstractUI() {
-        runUI();
+        //runUI();
     }
 
     //MODIFIES: this
@@ -85,7 +85,7 @@ public abstract class AbstractUI {
 
     //MODIFIES: this
     //EFFECTS: processes user command
-    protected void processCommand(String command) {
+    public void processCommand(String command) {
         switch (command) {
             case "i":
                 doIngredient(getAction());

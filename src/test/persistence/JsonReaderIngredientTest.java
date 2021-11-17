@@ -42,8 +42,8 @@ public class JsonReaderIngredientTest {
         try {
             ArrayList<Ingredient> ingredientList = reader.readIngredient();
             ArrayList<Ingredient> expected = new ArrayList<>();
-            expected.add(new Ingredient("Oats", 100, 333, 11, 73, 3 ));
-            expected.add(new Ingredient("Milk", 250, 90, 9, 12, 0 ));
+            expected.add(new Ingredient("Oats", 100, 333, 11, 73, 3));
+            expected.add(new Ingredient("Milk", 250, 90, 9, 12, 0));
             assertEquals(expected.get(0).getFields(), ingredientList.get(0).getFields());
             assertEquals(expected.get(1).getFields(), ingredientList.get(1).getFields());
         } catch (IOException | InvalidNutritionException e) {

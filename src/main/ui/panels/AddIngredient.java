@@ -6,60 +6,52 @@ import ui.GraphicalUI;
 import javax.swing.*;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 //Add ingredient panel for gui
-//JTable structure inspried by GeeksForGeeks JTable tutorial:
+//JTable structure inspired by GeeksForGeeks JTable tutorial:
 //Link: https://www.geeksforgeeks.org/java-swing-jtable/?ref=lbp
 public class AddIngredient extends JPanel {
     private static final String[] columnNames = { "Name", "Serving", "Calories", "Protein", "Carbs", "Fat"};
     String[][] data;
     JTable table;
     DefaultTableModel tableModel;
-    private final JPanel addIngredientPanel;
     private final GraphicalUI ui;
 
     // Constructor
     //MODIFIES: this
     //EFFECTS: Constructs addIngredientPanel
-    public AddIngredient(String[][] inputData, GraphicalUI ui) {
+    public AddIngredient(GraphicalUI ui, String[][] inputData) {
+        super(new BorderLayout());
         this.ui = ui;
-        addIngredientPanel = new JPanel(new BorderLayout());
 
         data = inputData;
 
         tableModel = new DefaultTableModel(data, columnNames);
         table = new JTable(tableModel);
-        table.setBounds(30, 40, 200, 300);
+        table.setBounds(30, 0, 200, 300);
         JScrollPane sp = new JScrollPane(table);
 
-        JPanel buttonPanel = new JPanel(new GridLayout(1,3));
+        JPanel buttonPanel = new JPanel(new GridLayout(1,4));
+        JButton add = new JButton("Add Row");
+        add.addActionListener(new ButtonListener("Add"));
+        JButton remove = new JButton("Remove Row");
+        remove.addActionListener(new ButtonListener("Remove"));
         JButton done = new JButton("Done");
         done.addActionListener(new ButtonListener("Done"));
         JButton quit = new JButton("Quit");
         quit.addActionListener(new ButtonListener("Quit"));
-        JButton add = new JButton("Add Ingredient");
-        add.addActionListener(new ButtonListener("Add Ingredient"));
 
+        buttonPanel.add(add);
+        buttonPanel.add(remove);
         buttonPanel.add(done);
         buttonPanel.add(quit);
-        buttonPanel.add(add);
-        addIngredientPanel.add(sp, BorderLayout.CENTER);
-        addIngredientPanel.add(buttonPanel, BorderLayout.PAGE_END);
-    }
-
-    // Temp Driver  method
-    public static void main(String[] args) {
-        JFrame frame = new JFrame();
-        frame.setTitle("Add Ingredient");
-        String[][] data = new String[][]{{"", "", "", "", "", ""}};
-        frame.add(new AddIngredient(data, null).addIngredientPanel);
-        frame.setSize(500, 200);
-        frame.setVisible(true);
+        add(new JLabel("Write new ingredient declarations in the table below"), BorderLayout.NORTH);
+        add(sp, BorderLayout.CENTER);
+        add(buttonPanel, BorderLayout.SOUTH);
     }
 
     //Listener for AddIngredient buttons
@@ -72,19 +64,21 @@ public class AddIngredient extends JPanel {
         }
 
         @Override
-        //EFFECT: performs button action from clikced button
+        //EFFECT: performs button action from clicked button
         public void actionPerformed(ActionEvent e) {
             switch (name) {
-                case "Add Ingredient":
+                case "Add":
                     tableModel.addRow(new String[]{"", "", "", "", "", ""});
-                    System.out.println("Add");
+                    break;
+                case "Remove":
+                    tableModel.removeRow(tableModel.getRowCount() - 1);
                     break;
                 case "Done":
                     saveTableData();
-                    System.out.println("Done");
                 case "Quit":
-                    data = new String[][]{{"", "", "", "", "", ""}};
-                    System.out.println("Quit");
+                    tableModel.setNumRows(0);
+                    tableModel.addRow(new String[]{"", "", "", "", "", ""});
+                    ui.doCommand();
                     break;
 
             }
