@@ -20,8 +20,10 @@ public abstract class AbstractUI {
     protected boolean keepGoing;
 
     //EFFECTS: runs UI
-    public AbstractUI() {
-        //runUI();
+    public AbstractUI(boolean useRunUi) {
+        if (useRunUi) {
+            runUI();
+        }
     }
 
     //MODIFIES: this

@@ -9,11 +9,6 @@ import java.util.Scanner;
 
 //Console UI for TrackerApp
 
-//TODO: refactor trackerApp into a console ui, and a trackerApp class with no output, maybe move to model
-//Refactoring solutions: make trackerApp a data handling class, make new console ui class to move these methods to //
-//Make a ui abstract class will all these current functionalities, but for test that functionality has stayed the same//
-//then later add gui class, a lot of functionality stays preserved, code can be inactive, not deleted
-
 //ConsoleUI, showMenu, getAction modeled after the sample project TellerApp
 //Link: https://github.students.cs.ubc.ca/CPSC210/TellerApp
 public class ConsoleUI  extends AbstractUI {
@@ -21,7 +16,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //EFFECTS: runs the tracker application
     public ConsoleUI() {
-        super();
+        super(true);
     }
 
     //MODIFIES: this

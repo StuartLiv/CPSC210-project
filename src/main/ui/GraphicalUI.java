@@ -2,10 +2,13 @@ package ui;
 
 import model.Ingredient;
 import model.Profile;
+import model.exceptions.InvalidNutritionException;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import static java.lang.Thread.sleep;
@@ -18,6 +21,7 @@ public class GraphicalUI extends AbstractUI {
     //Close frame call used from Stack Overflow Comment:
     //Link: https://stackoverflow.com/a/1235994
     public GraphicalUI() {
+        super(false);
         init();
         doCommand();
     }
@@ -78,7 +82,7 @@ public class GraphicalUI extends AbstractUI {
 
     //EFFECTS: shows pop up window for actions
     protected String getAction() {
-        String[] possibleValues = {"Add", "Delete", "Print"};
+        String[] possibleValues = {"Add", "Edit", "Delete", "Print"};
         int selectedValue = JOptionPane.showOptionDialog(frame, "Select an action", "Action Select",
                 JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, possibleValues, possibleValues[0]);
         return possibleValues[selectedValue].toLowerCase(Locale.ROOT).substring(0, 1);
@@ -90,6 +94,8 @@ public class GraphicalUI extends AbstractUI {
         panel.setPanel(this, "add ingredient");
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes selected ingredient
     protected void removeIngredient() {
         Object[] ingredients = profile.getIngredientList().stream()
                 .map(Ingredient::getIngredientName).toArray();
@@ -98,6 +104,29 @@ public class GraphicalUI extends AbstractUI {
         profile.deleteIngredient(toDelete);
     }
 
+    protected void editIngredient() {
+        Object[] ingredients = profile.getIngredientList().stream()
+                .map(Ingredient::getIngredientName).toArray();
+        String toEdit = (String) JOptionPane.showInputDialog(frame, "Choose an ingredient to edit",
+                "Edit Ingredient", JOptionPane.INFORMATION_MESSAGE, null, ingredients, ingredients[0]);
+
+        Object[][] rows = {profile.findIngredient(toEdit).getFields().toArray(new String[6])};
+        String[] columnNames = { "Name", "Serving", "Calories", "Protein", "Carbs", "Fat"};
+        DefaultTableModel table = new DefaultTableModel(rows, columnNames);
+        JOptionPane.showMessageDialog(null, new JScrollPane(new JTable(table)));
+        ArrayList<String> ingredientFields = new ArrayList<>();
+        for (int j = 0; j < 6; j++) {
+            ingredientFields.add((String) table.getValueAt(0, j));
+        }
+        try {
+            profile.addIngredient(new Ingredient(ingredientFields.toArray(new String[6])));
+            profile.deleteIngredient(toEdit);
+        } catch (Exception e) {
+            //ingredient not added
+        }
+    }
+
+    //EFFECTS: shows all ingredients
     protected void showIngredients() {
         panel.setPanel(this, "show ingredient");
     }
@@ -128,10 +157,6 @@ public class GraphicalUI extends AbstractUI {
 
     protected void doStats() {
 
-    }
-
-    protected void editIngredient() {
-        //method is inactive
     }
 
     protected void editRecipe() {
