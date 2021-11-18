@@ -1,8 +1,6 @@
 package ui;
 
-import ui.panels.AddIngredient;
-import ui.panels.CommandPanel;
-import ui.panels.ShowIngredient;
+import ui.panels.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +29,9 @@ public class MainPanel extends JPanel {
         panels.put("command", new CommandPanel(ui));
         panels.put("add ingredient", new AddIngredient(ui, new String[][]{{"", "", "", "", "", ""}}));
         panels.put("show ingredient", new ShowIngredient(ui));
+        panels.put("show recipes", new ShowRecipe(ui));
+        panels.put("show meal", new ShowMeal(ui));
+        panels.put("show stats", new ShowStats(ui));
     }
 
     //EFFECTS: add panels in map to MainPanel
@@ -56,6 +57,9 @@ public class MainPanel extends JPanel {
     private void updatePanels() {
         ui.maintainSorted();
         ((ShowIngredient) panels.get("show ingredient")).updatePanel();
+        ((ShowRecipe) panels.get("show recipes")).updatePanel();
+        ((ShowMeal) panels.get("show meal")).updatePanel();
+        ((ShowStats) panels.get("show stats")).updatePanel();
         revalidate();
         repaint();
     }

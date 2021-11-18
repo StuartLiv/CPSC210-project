@@ -168,7 +168,7 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: shows recipes in profile
     protected void showRecipes() {
-
+        panel.setPanel("show recipes");
     }
 
     //MODIFIES: this
@@ -192,11 +192,11 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: shows meals in profile
     protected void showMeals() {
-
+        panel.setPanel("show meal");
     }
 
     //EFFECTS: shows statistics about profile
     protected void doStats() {
-
+        panel.setPanel("show stats");
     }
 }
