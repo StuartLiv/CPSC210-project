@@ -43,7 +43,7 @@ public class MainPanel extends JPanel {
     //EFFECTS: sets showing panel to one with given name
     //Card Layout Switching inspired by Stack Overflow answer
     //Link: https://stackoverflow.com/a/10823614
-    public void setPanel(GraphicalUI ui, String name) {
+    public void setPanel(String name) {
         ui.maintainSorted();
         updatePanels();
         revalidate();

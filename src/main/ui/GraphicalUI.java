@@ -2,11 +2,11 @@ package ui;
 
 import model.Ingredient;
 import model.Profile;
-import model.exceptions.InvalidNutritionException;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -22,8 +22,24 @@ public class GraphicalUI extends AbstractUI {
     //Link: https://stackoverflow.com/a/1235994
     public GraphicalUI() {
         super(false);
+        logo();
         init();
         doCommand();
+    }
+
+    //EFFECTS: shows logo
+    private void logo() {
+        JFrame f = new JFrame("Macronutrient Tracker");
+        f.add(new JLabel(new ImageIcon("./data/free-logo.png")));
+        f.setSize(640, 360);
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
+        try {
+            sleep(3000);
+        } catch (Exception ignore) {
+            //ignore
+        }
+        f.dispatchEvent(new WindowEvent(f, WindowEvent.WINDOW_CLOSING));
     }
 
     //MODIFIES: this
@@ -77,7 +93,7 @@ public class GraphicalUI extends AbstractUI {
     public void doCommand() {
         frame.revalidate();
         frame.repaint();
-        panel.setPanel(this, "command");
+        panel.setPanel("command");
     }
 
     //EFFECTS: shows pop up window for actions
@@ -91,7 +107,7 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: addIngredients entered by user as JTextFields
     protected void addIngredients() {
-        panel.setPanel(this, "add ingredient");
+        panel.setPanel("add ingredient");
     }
 
     //MODIFIES: this
@@ -104,6 +120,8 @@ public class GraphicalUI extends AbstractUI {
         profile.deleteIngredient(toDelete);
     }
 
+    //MODIFIES: this
+    //EFFECTS: edits selected ingredient
     protected void editIngredient() {
         Object[] ingredients = profile.getIngredientList().stream()
                 .map(Ingredient::getIngredientName).toArray();
@@ -128,7 +146,7 @@ public class GraphicalUI extends AbstractUI {
 
     //EFFECTS: shows all ingredients
     protected void showIngredients() {
-        panel.setPanel(this, "show ingredient");
+        panel.setPanel("show ingredient");
     }
 
     protected void addRecipes() {
@@ -136,6 +154,10 @@ public class GraphicalUI extends AbstractUI {
     }
 
     protected void removeRecipe() {
+
+    }
+
+    protected void editRecipe() {
 
     }
 
@@ -151,19 +173,15 @@ public class GraphicalUI extends AbstractUI {
 
     }
 
+    protected void editMeal() {
+
+    }
+
     protected void showMeals() {
 
     }
 
     protected void doStats() {
 
-    }
-
-    protected void editRecipe() {
-        //method is inactive
-    }
-
-    protected void editMeal() {
-        //method is inactive
     }
 }
