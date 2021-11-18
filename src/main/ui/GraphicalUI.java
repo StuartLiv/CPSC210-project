@@ -88,8 +88,6 @@ public class GraphicalUI extends AbstractUI {
     }
 
     //EFFECTS: shows command window, and sets up button listeners
-    //button list initializer inspired by alphabetical selector
-    //Link: https://www.roseindia.net/java/example/java/swing/create_multiple_buttons_using_ja.shtml
     public void doCommand() {
         frame.revalidate();
         frame.repaint();
@@ -149,38 +147,55 @@ public class GraphicalUI extends AbstractUI {
         panel.setPanel("show ingredient");
     }
 
+    //MODIFIES: this
+    //EFFECTS: add entered recipe to recipe book
     protected void addRecipes() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes recipe from profile
     protected void removeRecipe() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: edits recipes in profile
     protected void editRecipe() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: shows recipes in profile
     protected void showRecipes() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: adds meal to profile
     protected void addMeals() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: removes meal from profile
     protected void removeMeal() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: edits meals in profile
     protected void editMeal() {
 
     }
 
+    //MODIFIES: this
+    //EFFECTS: shows meals in profile
     protected void showMeals() {
 
     }
 
+    //EFFECTS: shows statistics about profile
     protected void doStats() {
 
     }

@@ -11,6 +11,10 @@ import java.util.Locale;
 
 public class CommandPanel extends JPanel {
 
+    //MODIFIES: this
+    //EFFECTS: initialize command panel
+    //button list initializer inspired by alphabetical selector
+    //Link: https://www.roseindia.net/java/example/java/swing/create_multiple_buttons_using_ja.shtml
     public CommandPanel(GraphicalUI ui) {
         super(new GridLayout(6,1));
 
@@ -25,10 +29,12 @@ public class CommandPanel extends JPanel {
         }
     }
 
+    //Button listening class for buttons
     static class MenuButtonAction extends AbstractAction {
         String buttonName;
         GraphicalUI ui;
 
+        //MODIFIES: this
         MenuButtonAction(String buttonName, GraphicalUI ui) {
             super(buttonName);
             this.buttonName = buttonName;
@@ -36,6 +42,7 @@ public class CommandPanel extends JPanel {
         }
 
         @Override
+        //EFFECTS: performs relevant action from button press
         public void actionPerformed(ActionEvent e) {
             if (buttonName.equals("Quit")) {
                 ui.saveState();

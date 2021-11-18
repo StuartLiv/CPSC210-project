@@ -39,4 +39,4 @@ nutritional goals easier.
 - As a user, I want to be reminded to save the application state when I exit the program
 
 ### Phase Three User Stories
-- As a user, I want to see summary graphs of my nutrition
+- As a user, I want to graphically add, edit, delete and see ingredients

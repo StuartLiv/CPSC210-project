@@ -21,7 +21,6 @@ public class AddIngredient extends JPanel {
     DefaultTableModel tableModel;
     private final GraphicalUI ui;
 
-    // Constructor
     //MODIFIES: this
     //EFFECTS: Constructs addIngredientPanel
     public AddIngredient(GraphicalUI ui, String[][] inputData) {

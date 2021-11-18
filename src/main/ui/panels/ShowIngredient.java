@@ -12,7 +12,6 @@ public class ShowIngredient extends JPanel {
     private static final String[] columnNames = { "Name", "Serving", "Calories", "Protein", "Carbs", "Fat"};
     private JTable table;
     private final GraphicalUI ui;
-    private String[][] data;
     DefaultTableModel tableModel = new DefaultTableModel();
 
     // Constructor
@@ -34,9 +33,11 @@ public class ShowIngredient extends JPanel {
         add(quit, BorderLayout.SOUTH);
     }
 
+    //MODIFIES: this
+    //EFFECTS: updates panel to reflect current ingredientList
     public void updatePanel() {
         ArrayList<Ingredient> ingredients = ui.getProfile().getIngredientList();
-        data = new String[ingredients.size()][];
+        String[][] data = new String[ingredients.size()][];
         for (int i = 0; i < ingredients.size(); i++) {
             data[i] = ingredients.get(i).getFields().toArray(new String[6]);
         }

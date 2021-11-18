@@ -15,6 +15,8 @@ public class MainPanel extends JPanel {
     private final GraphicalUI ui;
     private Map<String, JPanel> panels;
 
+    //MODIFIES: this
+    //EFFECTS: initialize panel, with cardLayout
     public MainPanel(GraphicalUI ui) {
         this.ui = ui;
         mapInit();
@@ -44,16 +46,17 @@ public class MainPanel extends JPanel {
     //Card Layout Switching inspired by Stack Overflow answer
     //Link: https://stackoverflow.com/a/10823614
     public void setPanel(String name) {
-        ui.maintainSorted();
         updatePanels();
-        revalidate();
-        repaint();
         cardLayout = (CardLayout) getLayout();
         cardLayout.show(this, name);
     }
 
+    //MODIFIES: this
     //EFFECTS: updates panels in, where appropriate
     private void updatePanels() {
+        ui.maintainSorted();
         ((ShowIngredient) panels.get("show ingredient")).updatePanel();
+        revalidate();
+        repaint();
     }
 }
