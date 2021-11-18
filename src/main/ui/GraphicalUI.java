@@ -1,7 +1,9 @@
 package ui;
 
 import model.Ingredient;
+import model.Meal;
 import model.Profile;
+import model.Recipe;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -156,7 +158,11 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: removes recipe from profile
     protected void removeRecipe() {
-
+        Object[] recipes = profile.getRecipeBook().stream()
+                .map(Recipe::getName).toArray();
+        String toDelete = (String) JOptionPane.showInputDialog(frame, "Choose an recipe to delete",
+                "Remove Recipe", JOptionPane.INFORMATION_MESSAGE, null, recipes, recipes[0]);
+        profile.deleteRecipe(toDelete);
     }
 
     //MODIFIES: this
@@ -180,7 +186,11 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: removes meal from profile
     protected void removeMeal() {
-
+        Object[] meals = profile.getTracker().stream()
+                .map(Meal::getName).toArray();
+        String toDelete = (String) JOptionPane.showInputDialog(frame, "Choose an meal to delete",
+                "Remove Meal", JOptionPane.INFORMATION_MESSAGE, null, meals, meals[0]);
+        profile.deleteRecipe(toDelete);
     }
 
     //MODIFIES: this

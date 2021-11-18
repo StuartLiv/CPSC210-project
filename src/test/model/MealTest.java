@@ -112,6 +112,16 @@ class MealTest {
     }
 
     @Test
+    void getNameTest() {
+        try {
+            morningOatmeal = new Meal(oatmeal, 281, "2020-01-01", "07:00");
+            assertEquals("Overnight Oats at 2020-01-01T07:00", morningOatmeal.getName());
+        } catch (InvalidInputException e) {
+            fail("Inappropriate mass exception");
+        }
+    }
+
+    @Test
     void getTotalTest() {
         ArrayList<String> expected = new ArrayList<>();
         expected.add("Overnight Oats");

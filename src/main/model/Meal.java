@@ -79,6 +79,11 @@ public class Meal implements Writable {
         return total;
     }
 
+    //EFFECTS: returns String descriptor of meal
+    public String getName() {
+        return getRecipe().getName() + " at " + getDateTimeString();
+    }
+
     //EFFECTS: returns nutritional total scaled to this.serving
     private Portion getScaledTotal() throws InvalidNutritionException {
         double factor = (double) serving / recipe.massTotal();
