@@ -16,7 +16,7 @@ import java.util.Locale;
 import static java.lang.Thread.sleep;
 
 public class GraphicalUI extends AbstractUI {
-    JFrame frame;
+    private JFrame frame;
     private MainPanel panel;
 
     //EFFECTS: runs tracker
@@ -152,7 +152,7 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: add entered recipe to recipe book
     protected void addRecipes() {
-
+        panel.setPanel("add recipe");
     }
 
     //MODIFIES: this
@@ -168,7 +168,7 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: edits recipes in profile
     protected void editRecipe() {
-
+        panel.setPanel("edit recipe");
     }
 
     //MODIFIES: this
@@ -180,7 +180,7 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: adds meal to profile
     protected void addMeals() {
-
+        panel.setPanel("add meal");
     }
 
     //MODIFIES: this
@@ -196,7 +196,24 @@ public class GraphicalUI extends AbstractUI {
     //MODIFIES: this
     //EFFECTS: edits meals in profile
     protected void editMeal() {
+        Object[] meals = profile.getTracker().stream()
+                .map(Meal::getName).toArray();
+        String toEdit = (String) JOptionPane.showInputDialog(frame, "Choose a meal to edit",
+                "Edit Meal", JOptionPane.INFORMATION_MESSAGE, null, meals, meals[0]);
+        Meal m = profile.findMeal(toEdit);
+        Object[][] rows = {{m.getRecipe().getName(), m.getMass(), m.getDateString(), m.getTimeString()}};
+        String[] columnNames = {"Recipe", "Serving Size", "Date: YYYY-MM-DD", "Time: HH:MM"};
+        DefaultTableModel table = new DefaultTableModel(rows, columnNames);
+        JOptionPane.showMessageDialog(null, new JScrollPane(new JTable(table)));
 
+        try {
+            profile.addMeal(new Meal(profile.findRecipe((String) table.getValueAt(0, 0)),
+                    Integer.parseInt((String) table.getValueAt(0, 1)),
+                    (String) table.getValueAt(0, 2), (String) table.getValueAt(0, 3)));
+            profile.deleteMeal(m);
+        } catch (Exception e) {
+            //ingredient not added
+        }
     }
 
     //MODIFIES: this

@@ -100,4 +100,14 @@ public class Profile {
     public void deleteMeal(Meal meal) {
         tracker.remove(meal);
     }
+
+    //EFFECTS: returns meal with given search name
+    public Meal findMeal(String name) {
+        for (Meal m: tracker) {
+            if (name.equals(m.getName())) {
+                return m;
+            }
+        }
+        return null;
+    }
 }

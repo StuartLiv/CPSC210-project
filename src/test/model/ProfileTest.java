@@ -63,10 +63,11 @@ public class ProfileTest {
     @Test
     void mealTests() {
         try {
-            Meal testMeal = new Meal((new Recipe(portions, "Test")), 281, "today", "00:00");
+            Meal testMeal = new Meal((new Recipe(portions, "Test")), 281, "2000-01-01", "00:00");
             assertEquals(0, profile.getTracker().size());
             profile.addMeal(testMeal);
             assertEquals(testMeal, profile.getTracker().get(0));
+            assertEquals(testMeal, profile.findMeal("Test at 2000-01-01T00:00"));
             profile.deleteMeal(testMeal);
             assertEquals(0, profile.getTracker().size());
         } catch (InvalidInputException e) {

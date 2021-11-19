@@ -1,40 +1,40 @@
 package ui.panels;
 
-import model.Ingredient;
+import model.Portion;
+import model.Recipe;
+import model.exceptions.InvalidInputException;
+import model.exceptions.InvalidMassException;
 import ui.GraphicalUI;
 
 import javax.swing.*;
-
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-//Add ingredient panel for gui
-//JTable structure inspired by GeeksForGeeks JTable tutorial:
-//Link: https://www.geeksforgeeks.org/java-swing-jtable/?ref=lbp
-public class AddIngredient extends JPanel {
-    private static final String[] columnNames = { "Name", "Serving", "Calories", "Protein", "Carbs", "Fat"};
+public class AddRecipe extends JPanel {
+    private static final String[] columnNames = {"Ingredient", "Mass of Ingredient"};
     String[][] data;
     JTable table;
     DefaultTableModel tableModel;
-    private final GraphicalUI ui;
+    private final GraphicalUI gui;
 
     //MODIFIES: this
-    //EFFECTS: Constructs addIngredientPanel
-    public AddIngredient(GraphicalUI ui, String[][] inputData) {
+    //EFFECTS: Constructs addRecipePanel
+    public AddRecipe(GraphicalUI ui, String[][] inputData) {
         super(new BorderLayout());
-        this.ui = ui;
+        this.gui = ui;
 
         data = inputData;
 
         tableModel = new DefaultTableModel(data, columnNames);
         table = new JTable(tableModel);
+        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new IngredientBox(gui)));
         table.setBounds(30, 0, 200, 300);
         JScrollPane sp = new JScrollPane(table);
 
-        add(new JLabel("Write new ingredient declarations in the table below"), BorderLayout.NORTH);
+        add(new JLabel("Write recipe portions in the table below"), BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
         add(new OptionButtons(), BorderLayout.SOUTH);
     }
@@ -75,7 +75,7 @@ public class AddIngredient extends JPanel {
         public void actionPerformed(ActionEvent e) {
             switch (name) {
                 case "Add":
-                    tableModel.addRow(new String[]{"", "", "", "", "", ""});
+                    tableModel.addRow(new String[]{"Select Ingredient", ""});
                     break;
                 case "Remove":
                     tableModel.removeRow(tableModel.getRowCount() - 1);
@@ -84,28 +84,31 @@ public class AddIngredient extends JPanel {
                     saveTableData();
                 case "Quit":
                     tableModel.setNumRows(0);
-                    tableModel.addRow(new String[]{"", "", "", "", "", ""});
-                    ui.doCommand();
+                    tableModel.addRow(new String[]{"Select Ingredient", ""});
+                    gui.doCommand();
                     break;
 
             }
         }
     }
 
-    //MODIFIES: this.ui.profile.ingredientList
+    //MODIFIES: this.ui.profile.recipeBook
     //EFFECTS: saves entered data to user profile
     private void saveTableData() {
-        ArrayList<String> ingredientFields;
+        ArrayList<Portion> portions = new ArrayList<>();
         for (int i = 0; i < tableModel.getRowCount(); i++) {
-            ingredientFields = new ArrayList<>();
-            for (int j = 0; j < 6; j++) {
-                ingredientFields.add((String) tableModel.getValueAt(i, j));
-            }
             try {
-                ui.getProfile().addIngredient(new Ingredient(ingredientFields.toArray(new String[6])));
-            } catch (Exception ignore) {
-                //Ingredient not added
+                portions.add(new Portion(gui.getProfile().findIngredient((String) tableModel.getValueAt(i, 0)),
+                        Integer.parseInt((String) tableModel.getValueAt(i,1))));
+            } catch (InvalidMassException e) {
+                //portion is invalid, not added;
             }
+        }
+        try {
+            gui.getProfile().addRecipe(new Recipe(portions,
+                    JOptionPane.showInputDialog("What would you like to name the recipe?")));
+        } catch (InvalidInputException e) {
+            throw new RuntimeException();
         }
     }
 }

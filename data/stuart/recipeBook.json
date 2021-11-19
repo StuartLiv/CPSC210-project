@@ -65,6 +65,44 @@
         ]
     },
     {
+        "name": "Chicken Salad",
+        "portions": [
+            {
+                "Ingredient": [
+                    "Chicken",
+                    "150",
+                    "270",
+                    "47",
+                    "0",
+                    "5"
+                ],
+                "mass": 150
+            },
+            {
+                "Ingredient": [
+                    "Strawberry",
+                    "50",
+                    "17",
+                    "1",
+                    "4",
+                    "0"
+                ],
+                "mass": 50
+            },
+            {
+                "Ingredient": [
+                    "Lettuce",
+                    "100",
+                    "10",
+                    "0",
+                    "5",
+                    "0"
+                ],
+                "mass": 100
+            }
+        ]
+    },
+    {
         "name": "Overnight Oats",
         "portions": [
             {
