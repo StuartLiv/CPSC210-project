@@ -16,14 +16,6 @@
         "3"
     ]},
     {"Ingredient": [
-        "Lettuce",
-        "100",
-        "10",
-        "0",
-        "5",
-        "0"
-    ]},
-    {"Ingredient": [
         "Milk",
         "250",
         "90",
@@ -32,11 +24,35 @@
         "0"
     ]},
     {"Ingredient": [
+        "Oat Milk",
+        "250",
+        "110",
+        "3",
+        "7",
+        "2"
+    ]},
+    {"Ingredient": [
         "Oats",
         "100",
         "333",
         "11",
         "73",
+        "3"
+    ]},
+    {"Ingredient": [
+        "Peanut Butter",
+        "20",
+        "95",
+        "4",
+        "4",
+        "8"
+    ]},
+    {"Ingredient": [
+        "Protein Bread",
+        "20",
+        "80",
+        "7",
+        "8",
         "3"
     ]},
     {"Ingredient": [

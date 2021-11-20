@@ -20,15 +20,13 @@ public abstract class AbstractUI {
     protected boolean keepGoing;
 
     //EFFECTS: runs UI
-    public AbstractUI(boolean useRunUi) {
-        if (useRunUi) {
-            runUI();
-        }
+    public AbstractUI() {
+        runUI();
     }
 
     //MODIFIES: this
     //EFFECTS: runs the ui, and program
-    private void runUI() {
+    protected void runUI() {
         init();
         keepGoing = true;
 
@@ -37,6 +35,7 @@ public abstract class AbstractUI {
             maintainSorted();
         }
         saveState();
+        printLog();
     }
 
     //MODIFIES: keepGoing
@@ -264,6 +263,14 @@ public abstract class AbstractUI {
             return (new Recipe(totalsPerDay, date)).getTotal();
         } catch (InvalidInputException e) {
             return null;
+        }
+    }
+
+    //EFFECTS: prints EventLog to Screen
+    protected void printLog() {
+        EventLog el = EventLog.getInstance();
+        for (Event e: el) {
+            System.out.println(e.toString());
         }
     }
 }

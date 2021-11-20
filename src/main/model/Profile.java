@@ -39,6 +39,7 @@ public class Profile {
     //EFFECTS: adds ingredient to ingredientList
     public void addIngredient(Ingredient ingredient) {
         ingredientList.add(ingredient);
+        EventLog.getInstance().logEvent(new Event("Added Ingredient: " + ingredient.getIngredientName()));
     }
 
     //MODIFIES: this
@@ -47,6 +48,7 @@ public class Profile {
         for (int i = 0; i < ingredientList.size(); i++) {
             if (ingredientList.get(i).getIngredientName().equals(name)) {
                 ingredientList.remove(i);
+                EventLog.getInstance().logEvent(new Event("Deleted Ingredient: " + name));
                 break;
             }
         }
@@ -66,6 +68,7 @@ public class Profile {
     //EFFECTS: adds recipe to recipeBook
     public void addRecipe(Recipe recipe) {
         recipeBook.add(recipe);
+        EventLog.getInstance().logEvent(new Event("Added Recipe: " + recipe.getName()));
     }
 
     //MODIFIES: this
@@ -74,6 +77,7 @@ public class Profile {
         for (int i = 0; i < recipeBook.size(); i++) {
             if (recipeBook.get(i).getName().equals(name)) {
                 recipeBook.remove(i);
+                EventLog.getInstance().logEvent(new Event("Deleted Recipe: " + name));
                 break;
             }
         }
@@ -93,12 +97,14 @@ public class Profile {
     //EFFECTS: adds meal to tracker
     public void addMeal(Meal meal) {
         tracker.add(meal);
+        EventLog.getInstance().logEvent(new Event("Added Meal: " + meal.getName()));
     }
 
     //MODIFIES: this
     //EFFECTS: deletes meal from tracker
     public void deleteMeal(Meal meal) {
         tracker.remove(meal);
+        EventLog.getInstance().logEvent(new Event("Deleted Meal: " + meal.getName()));
     }
 
     //EFFECTS: returns meal with given search name

@@ -16,7 +16,7 @@ public class ConsoleUI  extends AbstractUI {
 
     //EFFECTS: runs the tracker application
     public ConsoleUI() {
-        super(true);
+        super();
     }
 
     //MODIFIES: this

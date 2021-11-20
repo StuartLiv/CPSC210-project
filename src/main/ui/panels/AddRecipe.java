@@ -30,13 +30,18 @@ public class AddRecipe extends JPanel {
 
         tableModel = new DefaultTableModel(data, columnNames);
         table = new JTable(tableModel);
-        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new IngredientBox(gui)));
+        updatePanel();
         table.setBounds(30, 0, 200, 300);
         JScrollPane sp = new JScrollPane(table);
 
         add(new JLabel("Write recipe portions in the table below"), BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
         add(new OptionButtons(), BorderLayout.SOUTH);
+    }
+
+    //EFFECTS: updates comboBoxes
+    public void updatePanel() {
+        table.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new IngredientBox(gui)));
     }
 
     //Button Panel

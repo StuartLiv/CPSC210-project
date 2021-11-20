@@ -40,3 +40,18 @@ nutritional goals easier.
 
 ### Phase Three User Stories
 - As a user, I want to graphically add, edit, delete and see ingredients
+
+
+##Phase 4 Task 2:
+Sat Nov 20 14:26:35 PST 2021
+Added Ingredient: Peanut Butter
+Sat Nov 20 14:26:35 PST 2021
+Added Ingredient: Protein Bread
+Sat Nov 20 14:27:46 PST 2021
+Added Recipe: Strawberry Peanut Toast
+Sat Nov 20 14:28:08 PST 2021
+Added Meal: Strawberry Peanut Toast at 2021-11-20T10:00
+Sat Nov 20 14:28:19 PST 2021
+Deleted Ingredient: Lettuce
+Sat Nov 20 14:29:02 PST 2021
+Added Ingredient: Oat Milk

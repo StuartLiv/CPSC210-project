@@ -66,7 +66,9 @@ public class MainPanel extends JPanel {
     private void updatePanels(String name) {
         ui.maintainSorted();
         ((ShowIngredient) panels.get("show ingredient")).updatePanel();
+        ((AddRecipe) panels.get("add recipe")).updatePanel();
         ((ShowRecipe) panels.get("show recipes")).updatePanel();
+        ((AddMeal) panels.get("add meal")).updatePanel();
         ((ShowMeal) panels.get("show meal")).updatePanel();
         ((ShowStats) panels.get("show stats")).updatePanel();
         if (name.equals("edit recipe")) {

@@ -23,7 +23,14 @@ public class GraphicalUI extends AbstractUI {
     //Close frame call used from Stack Overflow Comment:
     //Link: https://stackoverflow.com/a/1235994
     public GraphicalUI() {
-        super(false);
+        super();
+
+    }
+
+    @Override
+    //MODIFIES: this
+    //EFFECTS: runs the ui, and program
+    protected void runUI() {
         logo();
         init();
         doCommand();
@@ -87,6 +94,7 @@ public class GraphicalUI extends AbstractUI {
                 System.out.println("Unexpected file name error, data could not be saved");
             }
         }
+        printLog();
     }
 
     //EFFECTS: shows command window, and sets up button listeners

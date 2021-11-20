@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ShowStats extends JPanel {
-    private static final String[] columnNames = {"Date", "Mass", "Calories", "Protein", "Carbs", "Fat", "Date"};
+    private static final String[] columnNames = {"Date", "Mass", "Calories", "Protein", "Carbs", "Fat"};
     private JTable table;
     private final GraphicalUI ui;
     DefaultTableModel tableModel = new DefaultTableModel();
