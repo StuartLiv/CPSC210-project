@@ -55,3 +55,14 @@ Sat Nov 20 14:28:19 PST 2021
 Deleted Ingredient: Lettuce
 Sat Nov 20 14:29:02 PST 2021
 Added Ingredient: Oat Milk
+
+##Phase 4 Task 3:
+Potential refactoring changes:
+- Superclass for the different JPanels in MainPanel, as they all have the same associations, makes updatePanel blackbox
+- Similar gui panels (ie show field) superclassed and refactored for single point of control
+- Refactor doIngredient, doRecipe, doMeal into one function, using functions as parameters
+- Migrate getDailyTotal functionality to profile, using a dailyTotals field of type ArrayList<Portion> 
+- Change current add and delete field in profile method of editing to new editField method, for clearer debugging
+- Similar inside classes in gui panel classes could be given type hierarchy, and refactored to remove similar code
+- Json methods could be storage optimized to store to one file, as storing to multiple files is somewhat redundant
+- Many ConsoleUI methods could be refactored, to decrease duplicate/near duplicate code
