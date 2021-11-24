@@ -58,8 +58,8 @@ Added Ingredient: Oat Milk
 
 ##Phase 4 Task 3:
 Potential refactoring changes:
-- Superclass for the different JPanels in MainPanel, as they all have the same associations, makes updatePanel blackbox
-- Similar gui panels (ie show field) superclassed and refactored for single point of control
+- Superclass for the different JPanels in MainPanel, as they all have the same associations
+- Implement observer pattern on new superclass, move MainPanel.updatePanels behavior te be observer dependant
 - Refactor doIngredient, doRecipe, doMeal into one function, using functions as parameters
 - Migrate getDailyTotal functionality to profile, using a dailyTotals field of type ArrayList<Portion> 
 - Change current add and delete field in profile method of editing to new editField method, for clearer debugging
