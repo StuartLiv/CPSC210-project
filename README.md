@@ -43,6 +43,8 @@ nutritional goals easier.
 
 
 ##Phase 4 Task 2:
+Sat Nov 20 14:25:47 PST 2021
+Profile data read from ./data/stuart/
 Sat Nov 20 14:26:35 PST 2021
 Added Ingredient: Peanut Butter
 Sat Nov 20 14:26:35 PST 2021

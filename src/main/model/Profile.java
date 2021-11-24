@@ -18,6 +18,7 @@ public class Profile {
         ingredientList = new JsonReaderIngredient(source + "ingredients.json").readIngredient();
         recipeBook = new JsonReaderRecipe(source + "recipeBook.json").readRecipe();
         tracker = new JsonReaderMeal(source + "tracker.json").readMeal();
+        EventLog.getInstance().logEvent(new Event("Profile data read from " + source));
     }
 
     //EFFECTS: returns ingredientList
